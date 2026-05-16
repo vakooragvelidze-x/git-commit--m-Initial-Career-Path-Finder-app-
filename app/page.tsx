@@ -63,5 +63,21 @@ export default function Home() {
         </div>
       </section>
     </main>
-  );
+  )
+  ;<footer className="border-t border-black/10 bg-white/60 px-6 py-8 text-center text-sm text-black/50">
+  <div className="flex flex-wrap justify-center gap-5">
+    <a href="/pricing" className="hover:text-black">
+      Pricing
+    </a>
+    <a href="/terms" className="hover:text-black">
+      Terms
+    </a>
+    <a href="/privacy" className="hover:text-black">
+      Privacy
+    </a>
+    <a href="/refund" className="hover:text-black">
+      Refund Policy
+    </a>
+  </div>
+</footer>
 }
