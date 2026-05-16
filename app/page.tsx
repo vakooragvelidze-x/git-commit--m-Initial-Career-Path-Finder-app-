@@ -18,21 +18,21 @@ export default function Home() {
           career signals, and your practical 28-day action plan.
         </p>
 
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-          <a
-  href="/quiz"
-  className="mt-6 block rounded-full bg-[#fffdf8] px-8 py-4 text-center text-base font-extrabold text-[#240366] shadow-lg shadow-[#240366]/15 ring-1 ring-[#240366]/15 transition hover:bg-[#f5b3df]"
->
-  Start Assessment
-</a>
+        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+  <a
+    href="/quiz"
+    className="flex h-16 w-[270px] items-center justify-center rounded-full bg-[#fffdf8] text-base font-extrabold text-[#240366] shadow-lg shadow-[#240366]/15 ring-1 ring-[#240366]/15 transition hover:bg-[#f5b3df]"
+  >
+    Start Assessment
+  </a>
 
-          <a
-            href="#report-preview"
-            className="rounded-full border border-[#240366]/15 bg-white/75 px-8 py-4 text-base font-extrabold text-[#240366] shadow-sm backdrop-blur transition hover:bg-[#e8e2a0]"
-          >
-            See What You’ll Get
-          </a>
-        </div>
+  <a
+    href="#report-preview"
+    className="flex h-16 w-[270px] items-center justify-center rounded-full border border-[#240366]/15 bg-[#fffdf8] text-base font-extrabold text-[#240366] shadow-lg shadow-[#240366]/10 backdrop-blur transition hover:bg-[#e8e2a0]"
+  >
+    See What You’ll Get
+  </a>
+</div>
       </section>
 
       <section
