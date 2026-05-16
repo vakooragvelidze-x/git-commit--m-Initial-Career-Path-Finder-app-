@@ -1,1087 +1,1537 @@
-import type { Question } from "./types";
-
-export const QUESTIONS: Question[] = [
+export const QUESTIONS = [
+  // 1. CURRENT FIT — 3 QUESTIONS
   {
-    id: "q01_current_feeling",
-    section: "Current situation",
+    id: "q01_current_fit",
+    section: "Current fit",
     question: "Which sentence best describes your work life right now?",
     options: [
       {
         id: "a",
         label:
-          "I feel drained and need to make things more stable before changing anything big.",
-        dimensions: { stabilityNeed: 8, burnoutRisk: 8, riskTolerance: -3 },
-        results: { stability_planner: 9 },
+          "I feel drained and need more stability before changing anything big.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 5,
+          riskTolerance: 1,
+          changeReadiness: 1,
+        },
+        results: {
+          stability_planner: 6,
+        },
       },
       {
         id: "b",
         label:
           "My field may still be right, but my current role or company does not fit well.",
-        dimensions: { currentFit: 7, changeReadiness: 3, skillLeverage: 4 },
-        results: { current_path_optimizer: 8, growth_accelerator: 2 },
+        dimensions: {
+          currentFit: 4,
+          growthAmbition: 4,
+          skillLeverage: 4,
+          changeReadiness: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+          growth_accelerator: 3,
+        },
       },
       {
         id: "c",
         label:
           "I want a different direction, but I do not want to waste my past experience.",
-        dimensions: { skillLeverage: 8, changeReadiness: 6 },
-        results: { skill_repositioner: 9 },
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          riskTolerance: 3,
+          learningCapacity: 3,
+        },
+        results: {
+          skill_repositioner: 6,
+          purposeful_switcher: 2,
+        },
       },
       {
         id: "d",
         label:
-          "I feel like my work no longer matches who I am or what matters to me.",
-        dimensions: { valuesNeed: 9, changeReadiness: 7, currentFit: -4 },
-        results: { purposeful_switcher: 9 },
+          "My work no longer matches who I am or what matters to me.",
+        dimensions: {
+          valuesNeed: 5,
+          currentFit: 1,
+          changeReadiness: 4,
+          learningCapacity: 3,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "I want more freedom, control, and independence in how I work.",
-        dimensions: { autonomyNeed: 9, riskTolerance: 5, changeReadiness: 5 },
-        results: { independent_builder: 9 },
+        label:
+          "I want more freedom, control, and independence in how I work.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 4,
+          changeReadiness: 4,
+          growthAmbition: 3,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q02_main_goal",
-    section: "Goal",
-    question: "What would feel like the most useful outcome from this report?",
+    id: "q02_current_problem",
+    section: "Current fit",
+    question: "What feels like the biggest problem in your current career situation?",
     options: [
       {
         id: "a",
-        label: "A realistic plan that does not risk my income or stability.",
-        dimensions: { stabilityNeed: 8, riskTolerance: -2 },
-        results: { stability_planner: 8 },
+        label: "I feel overextended, tired, or mentally overloaded.",
+        dimensions: {
+          burnoutRisk: 5,
+          stabilityNeed: 4,
+          learningCapacity: 1,
+          riskTolerance: 1,
+        },
+        results: {
+          stability_planner: 6,
+        },
       },
       {
         id: "b",
-        label: "A clearer way to improve my current career path.",
-        dimensions: { currentFit: 7, growthAmbition: 5 },
-        results: { current_path_optimizer: 8, growth_accelerator: 3 },
+        label:
+          "I am capable of more, but my current role does not use my full ability.",
+        dimensions: {
+          growthAmbition: 5,
+          skillLeverage: 4,
+          currentFit: 3,
+          changeReadiness: 3,
+        },
+        results: {
+          growth_accelerator: 5,
+          current_path_optimizer: 3,
+        },
       },
       {
         id: "c",
         label:
-          "A way to use my existing skills in a better-fitting role or industry.",
-        dimensions: { skillLeverage: 9, changeReadiness: 5 },
-        results: { skill_repositioner: 9 },
+          "I have useful experience, but I do not know how to reposition it.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 3,
+          learningCapacity: 3,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
         label:
-          "A sign that I should seriously explore a more meaningful direction.",
-        dimensions: { valuesNeed: 8, changeReadiness: 7, learningCapacity: 4 },
-        results: { purposeful_switcher: 9 },
+          "The work itself feels misaligned with my values or personality.",
+        dimensions: {
+          valuesNeed: 5,
+          currentFit: 1,
+          changeReadiness: 4,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "A path toward more independence, flexibility, or side income.",
-        dimensions: { autonomyNeed: 8, riskTolerance: 5, growthAmbition: 4 },
-        results: { independent_builder: 8 },
+        label:
+          "I dislike being boxed into someone else’s structure or decisions.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 4,
+          growthAmbition: 3,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q03_biggest_problem",
-    section: "Problem",
-    question: "What feels like the biggest career problem for you right now?",
+    id: "q03_current_fit_future",
+    section: "Current fit",
+    question: "When you imagine staying on your current path for another year, what do you feel?",
     options: [
       {
         id: "a",
-        label: "I am tired, pressured, or overloaded and cannot think clearly.",
-        dimensions: { burnoutRisk: 9, stabilityNeed: 7, learningCapacity: -2 },
-        results: { stability_planner: 9 },
+        label: "Relief, if I can make it more stable and less stressful.",
+        dimensions: {
+          currentFit: 3,
+          stabilityNeed: 5,
+          burnoutRisk: 4,
+        },
+        results: {
+          stability_planner: 5,
+          current_path_optimizer: 2,
+        },
       },
       {
         id: "b",
-        label: "I am underpaid, underused, or stuck in the wrong environment.",
-        dimensions: { currentFit: 6, growthAmbition: 7, skillLeverage: 5 },
-        results: { current_path_optimizer: 7, growth_accelerator: 5 },
+        label: "It could work if I get more responsibility, money, or recognition.",
+        dimensions: {
+          currentFit: 4,
+          growthAmbition: 5,
+          skillLeverage: 4,
+        },
+        results: {
+          growth_accelerator: 5,
+          current_path_optimizer: 4,
+        },
       },
       {
         id: "c",
-        label: "I have skills, but I do not know where else they could fit.",
-        dimensions: { skillLeverage: 9, changeReadiness: 5 },
-        results: { skill_repositioner: 10 },
+        label: "I would rather move sideways into something related but better.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          riskTolerance: 3,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label:
-          "The work feels disconnected from my values or long-term identity.",
-        dimensions: { valuesNeed: 10, currentFit: -5, changeReadiness: 6 },
-        results: { purposeful_switcher: 10 },
+        label: "I feel like I would be delaying a change I already know I need.",
+        dimensions: {
+          valuesNeed: 5,
+          currentFit: 1,
+          changeReadiness: 5,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label:
-          "I do not want to depend completely on one employer or one job title.",
-        dimensions: { autonomyNeed: 9, riskTolerance: 5, growthAmbition: 4 },
-        results: { independent_builder: 9 },
+        label: "I mostly want to create my own path instead of staying inside a fixed track.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 4,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 6,
+        },
+      },
+    ],
+  },
+
+  // 2. ENERGY / BURNOUT RISK — 3 QUESTIONS
+  {
+    id: "q04_energy",
+    section: "Energy and burnout risk",
+    question: "How much energy do you realistically have for career change right now?",
+    options: [
+      {
+        id: "a",
+        label: "Very little. I need recovery and stability first.",
+        dimensions: {
+          burnoutRisk: 5,
+          stabilityNeed: 5,
+          learningCapacity: 1,
+          riskTolerance: 1,
+        },
+        results: {
+          stability_planner: 7,
+        },
+      },
+      {
+        id: "b",
+        label: "Some energy, but only for small practical improvements.",
+        dimensions: {
+          stabilityNeed: 4,
+          burnoutRisk: 3,
+          changeReadiness: 2,
+          learningCapacity: 2,
+        },
+        results: {
+          stability_planner: 4,
+          current_path_optimizer: 3,
+        },
+      },
+      {
+        id: "c",
+        label: "Enough energy to update my role, positioning, or opportunities.",
+        dimensions: {
+          growthAmbition: 4,
+          skillLeverage: 4,
+          changeReadiness: 3,
+          learningCapacity: 3,
+        },
+        results: {
+          current_path_optimizer: 4,
+          growth_accelerator: 4,
+        },
+      },
+      {
+        id: "d",
+        label: "Enough energy to explore a serious transition if it is planned well.",
+        dimensions: {
+          changeReadiness: 5,
+          learningCapacity: 4,
+          riskTolerance: 3,
+          valuesNeed: 3,
+        },
+        results: {
+          skill_repositioner: 3,
+          purposeful_switcher: 4,
+        },
+      },
+      {
+        id: "e",
+        label: "High energy. I am ready to build, test, or take a bigger move.",
+        dimensions: {
+          growthAmbition: 5,
+          autonomyNeed: 4,
+          changeReadiness: 5,
+          riskTolerance: 5,
+        },
+        results: {
+          independent_builder: 4,
+          growth_accelerator: 4,
+        },
       },
     ],
   },
   {
-    id: "q04_current_field",
-    section: "Fit",
-    question: "How do you feel about your current field or industry?",
+    id: "q05_stress_pattern",
+    section: "Energy and burnout risk",
+    question: "Which stress pattern sounds most familiar?",
     options: [
       {
         id: "a",
-        label: "I mostly want out, but I need to be careful about how I do it.",
-        dimensions: { currentFit: -5, changeReadiness: 6, stabilityNeed: 6 },
-        results: { stability_planner: 5, purposeful_switcher: 4 },
+        label: "I am tired from pressure, responsibility, or lack of breathing room.",
+        dimensions: {
+          burnoutRisk: 5,
+          stabilityNeed: 5,
+          riskTolerance: 1,
+        },
+        results: {
+          stability_planner: 6,
+        },
       },
       {
         id: "b",
-        label:
-          "The field is okay. I probably need a better role, team, company, or pay level.",
-        dimensions: { currentFit: 8, growthAmbition: 5, skillLeverage: 5 },
-        results: { current_path_optimizer: 10 },
+        label: "I am frustrated because I am underused or not progressing.",
+        dimensions: {
+          growthAmbition: 5,
+          currentFit: 3,
+          skillLeverage: 3,
+        },
+        results: {
+          growth_accelerator: 5,
+          current_path_optimizer: 3,
+        },
       },
       {
         id: "c",
-        label:
-          "Some parts of it are useful, but I want to transfer into a better area.",
-        dimensions: { currentFit: 2, skillLeverage: 8, changeReadiness: 6 },
-        results: { skill_repositioner: 9 },
+        label: "I am confused because I have options but no clear direction.",
+        dimensions: {
+          changeReadiness: 4,
+          skillLeverage: 4,
+          learningCapacity: 3,
+        },
+        results: {
+          skill_repositioner: 5,
+        },
       },
       {
         id: "d",
-        label: "It feels misaligned. I want something that fits my values better.",
-        dimensions: { currentFit: -6, valuesNeed: 9, changeReadiness: 7 },
-        results: { purposeful_switcher: 9 },
+        label: "I am emotionally disconnected from the work itself.",
+        dimensions: {
+          valuesNeed: 5,
+          currentFit: 1,
+          burnoutRisk: 3,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label:
-          "I am less attached to fields and more interested in flexible ways to earn.",
-        dimensions: { autonomyNeed: 8, riskTolerance: 4 },
-        results: { independent_builder: 8, skill_repositioner: 2 },
+        label: "I am restless because I want more control over my time and decisions.",
+        dimensions: {
+          autonomyNeed: 5,
+          growthAmbition: 4,
+          riskTolerance: 4,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q05_financial_pressure",
-    section: "Constraints",
-    question:
-      "How much financial pressure do you need to consider before changing paths?",
+    id: "q06_decision_timing",
+    section: "Energy and burnout risk",
+    question: "What kind of career decision would be healthiest for you right now?",
     options: [
       {
         id: "a",
-        label:
-          "A lot. I need a safe plan because others or major bills depend on my income.",
-        dimensions: { stabilityNeed: 10, riskTolerance: -5 },
-        results: { stability_planner: 10 },
+        label: "A slower decision after I reduce stress and regain clarity.",
+        dimensions: {
+          burnoutRisk: 5,
+          stabilityNeed: 5,
+          learningCapacity: 1,
+        },
+        results: {
+          stability_planner: 7,
+        },
       },
       {
         id: "b",
-        label: "Some. I can move, but only if the next step is practical.",
-        dimensions: { stabilityNeed: 5, riskTolerance: 1, changeReadiness: 3 },
-        results: { current_path_optimizer: 3, skill_repositioner: 4 },
+        label: "A practical improvement inside or near my current path.",
+        dimensions: {
+          currentFit: 4,
+          skillLeverage: 4,
+          stabilityNeed: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+        },
       },
       {
         id: "c",
-        label:
-          "Moderate. I can invest time into learning if there is a realistic path.",
-        dimensions: { learningCapacity: 6, changeReadiness: 4, stabilityNeed: 3 },
-        results: { skill_repositioner: 4, purposeful_switcher: 3 },
+        label: "A low-risk transition that uses what I already know.",
+        dimensions: {
+          skillLeverage: 5,
+          riskTolerance: 3,
+          changeReadiness: 4,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label: "Low. I can take more risk if the direction feels right.",
-        dimensions: { riskTolerance: 8, changeReadiness: 6 },
-        results: { purposeful_switcher: 4, independent_builder: 6 },
+        label: "A meaningful shift toward work that fits my values better.",
+        dimensions: {
+          valuesNeed: 5,
+          changeReadiness: 5,
+          learningCapacity: 3,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "I want to build extra income while keeping my main income stable.",
-        dimensions: { autonomyNeed: 7, stabilityNeed: 5, riskTolerance: 2 },
-        results: { independent_builder: 8, stability_planner: 2 },
+        label: "A bold experiment where I test more independent work.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 6,
+        },
+      },
+    ],
+  },
+
+  // 3. STABILITY & RESPONSIBILITY — 3 QUESTIONS
+  {
+    id: "q07_stability",
+    section: "Stability and responsibility",
+    question: "How important is stability in your next career move?",
+    options: [
+      {
+        id: "a",
+        label: "Extremely important. I cannot afford a risky move right now.",
+        dimensions: {
+          stabilityNeed: 5,
+          riskTolerance: 1,
+          burnoutRisk: 3,
+        },
+        results: {
+          stability_planner: 7,
+        },
+      },
+      {
+        id: "b",
+        label: "Important, but I still want progress inside a safer path.",
+        dimensions: {
+          stabilityNeed: 4,
+          growthAmbition: 3,
+          currentFit: 3,
+        },
+        results: {
+          current_path_optimizer: 4,
+          stability_planner: 3,
+        },
+      },
+      {
+        id: "c",
+        label: "Important, but I can make a planned transition if it is not reckless.",
+        dimensions: {
+          stabilityNeed: 3,
+          skillLeverage: 4,
+          changeReadiness: 4,
+          riskTolerance: 3,
+        },
+        results: {
+          skill_repositioner: 5,
+        },
+      },
+      {
+        id: "d",
+        label: "Less important than finding work that feels meaningful.",
+        dimensions: {
+          valuesNeed: 5,
+          changeReadiness: 4,
+          riskTolerance: 3,
+        },
+        results: {
+          purposeful_switcher: 5,
+        },
+      },
+      {
+        id: "e",
+        label: "I can handle uncertainty if it gives me independence or upside.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q06_energy",
-    section: "Energy",
-    question: "What is your energy level after a normal workweek?",
+    id: "q08_responsibilities",
+    section: "Stability and responsibility",
+    question: "How do your current responsibilities affect your career options?",
     options: [
       {
         id: "a",
-        label: "Very low. I mostly need recovery.",
-        dimensions: { burnoutRisk: 10, stabilityNeed: 7, learningCapacity: -4 },
-        results: { stability_planner: 10 },
+        label: "They limit my options heavily. I need a careful plan.",
+        dimensions: {
+          stabilityNeed: 5,
+          riskTolerance: 1,
+          learningCapacity: 1,
+        },
+        results: {
+          stability_planner: 7,
+        },
       },
       {
         id: "b",
-        label: "Low, but I think a better role or environment would help.",
-        dimensions: { burnoutRisk: 6, currentFit: 5, stabilityNeed: 4 },
-        results: { current_path_optimizer: 7, stability_planner: 3 },
+        label: "They matter, but I can still improve my current situation.",
+        dimensions: {
+          stabilityNeed: 4,
+          currentFit: 3,
+          growthAmbition: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+        },
       },
       {
         id: "c",
-        label: "Mixed. I have energy for learning if the direction feels useful.",
-        dimensions: { learningCapacity: 6, changeReadiness: 4, skillLeverage: 3 },
-        results: { skill_repositioner: 5, purposeful_switcher: 3 },
+        label: "They mean I need a transition that uses my existing skills.",
+        dimensions: {
+          skillLeverage: 5,
+          stabilityNeed: 3,
+          changeReadiness: 3,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label: "I have energy when the work feels meaningful.",
-        dimensions: { valuesNeed: 8, learningCapacity: 5, changeReadiness: 5 },
-        results: { purposeful_switcher: 7 },
+        label: "They make change harder, but staying misaligned also has a cost.",
+        dimensions: {
+          valuesNeed: 4,
+          changeReadiness: 4,
+          stabilityNeed: 3,
+        },
+        results: {
+          purposeful_switcher: 4,
+          skill_repositioner: 2,
+        },
       },
       {
         id: "e",
-        label: "I get energy from building my own things or controlling my time.",
-        dimensions: { autonomyNeed: 9, learningCapacity: 5, riskTolerance: 4 },
-        results: { independent_builder: 8 },
+        label: "I can create space for a side project, offer, or independent path.",
+        dimensions: {
+          autonomyNeed: 5,
+          learningCapacity: 4,
+          riskTolerance: 4,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q07_existing_skills",
-    section: "Career capital",
-    question: "How do you see your current skills and experience?",
+    id: "q09_money_risk",
+    section: "Stability and responsibility",
+    question: "What is your relationship with financial risk right now?",
     options: [
       {
         id: "a",
-        label: "I am not sure what my strongest skills are anymore.",
-        dimensions: { stabilityNeed: 5, skillLeverage: -2, burnoutRisk: 4 },
-        results: { stability_planner: 5, skill_repositioner: 2 },
+        label: "I need to protect income first. Risk must be very low.",
+        dimensions: {
+          stabilityNeed: 5,
+          riskTolerance: 1,
+          burnoutRisk: 3,
+        },
+        results: {
+          stability_planner: 7,
+        },
       },
       {
         id: "b",
-        label:
-          "They are useful, but I need to position them better in my current path.",
-        dimensions: { skillLeverage: 7, currentFit: 7, growthAmbition: 5 },
-        results: { current_path_optimizer: 7, growth_accelerator: 5 },
+        label: "I want better income, but through a safer career upgrade.",
+        dimensions: {
+          growthAmbition: 4,
+          stabilityNeed: 4,
+          currentFit: 3,
+          skillLeverage: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+          growth_accelerator: 3,
+        },
       },
       {
         id: "c",
-        label:
-          "They are transferable, but I need help translating them into another path.",
-        dimensions: { skillLeverage: 10, changeReadiness: 6 },
-        results: { skill_repositioner: 10 },
+        label: "I can accept moderate risk if my existing experience gives me leverage.",
+        dimensions: {
+          skillLeverage: 5,
+          riskTolerance: 3,
+          changeReadiness: 4,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label:
-          "Some are useful, but I may need to learn something new for a better fit.",
-        dimensions: { learningCapacity: 8, changeReadiness: 7, valuesNeed: 5 },
-        results: { purposeful_switcher: 7, skill_repositioner: 3 },
+        label: "I may accept temporary discomfort for a more meaningful direction.",
+        dimensions: {
+          valuesNeed: 5,
+          riskTolerance: 3,
+          changeReadiness: 4,
+        },
+        results: {
+          purposeful_switcher: 5,
+        },
       },
       {
         id: "e",
-        label: "I can combine them into a service, project, or independent offer.",
-        dimensions: { skillLeverage: 8, autonomyNeed: 8, riskTolerance: 5 },
-        results: { independent_builder: 9 },
+        label: "I am comfortable testing something independent if upside is real.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 6,
+        },
+      },
+    ],
+  },
+
+  // 4. SKILLS & LEVERAGE — 3 QUESTIONS
+  {
+    id: "q10_skills",
+    section: "Skills and leverage",
+    question: "How do you see your current skills?",
+    options: [
+      {
+        id: "a",
+        label: "I am too drained to think clearly about skills right now.",
+        dimensions: {
+          burnoutRisk: 5,
+          stabilityNeed: 4,
+          learningCapacity: 1,
+          skillLeverage: 1,
+        },
+        results: {
+          stability_planner: 6,
+        },
+      },
+      {
+        id: "b",
+        label: "My skills are useful, but I need a better role or environment.",
+        dimensions: {
+          skillLeverage: 4,
+          currentFit: 4,
+          growthAmbition: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+        },
+      },
+      {
+        id: "c",
+        label: "My skills are transferable, but I need to package them differently.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          learningCapacity: 3,
+        },
+        results: {
+          skill_repositioner: 7,
+        },
+      },
+      {
+        id: "d",
+        label: "My skills may help, but I need work that feels more aligned.",
+        dimensions: {
+          valuesNeed: 4,
+          skillLeverage: 3,
+          changeReadiness: 4,
+        },
+        results: {
+          purposeful_switcher: 5,
+          skill_repositioner: 2,
+        },
+      },
+      {
+        id: "e",
+        label: "My skills could become an offer, service, product, or independent path.",
+        dimensions: {
+          autonomyNeed: 5,
+          skillLeverage: 4,
+          riskTolerance: 4,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q08_promotion",
-    section: "Growth",
-    question: "How do you feel about growing inside your current career area?",
+    id: "q11_experience",
+    section: "Skills and leverage",
+    question: "What should happen to your past experience?",
     options: [
       {
         id: "a",
-        label: "I cannot think about growth until I feel less overwhelmed.",
-        dimensions: { burnoutRisk: 8, stabilityNeed: 7, growthAmbition: -2 },
-        results: { stability_planner: 8 },
+        label: "I need to stabilize first before deciding how to use it.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 4,
+          learningCapacity: 1,
+        },
+        results: {
+          stability_planner: 6,
+        },
       },
       {
         id: "b",
-        label:
-          "I would grow if I had better management, pay, or responsibility.",
-        dimensions: { currentFit: 8, growthAmbition: 8, skillLeverage: 5 },
-        results: { growth_accelerator: 8, current_path_optimizer: 5 },
+        label: "It should help me get a stronger position in a similar direction.",
+        dimensions: {
+          currentFit: 4,
+          skillLeverage: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          current_path_optimizer: 4,
+          growth_accelerator: 4,
+        },
       },
       {
         id: "c",
-        label:
-          "Growth matters, but probably in a more adjacent or better-fitting role.",
-        dimensions: { skillLeverage: 8, growthAmbition: 6, changeReadiness: 5 },
-        results: { skill_repositioner: 8, growth_accelerator: 2 },
+        label: "It should become the bridge into a better related path.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          riskTolerance: 3,
+        },
+        results: {
+          skill_repositioner: 7,
+        },
       },
       {
         id: "d",
-        label: "I do not want more of the same even if it comes with a better title.",
-        dimensions: { valuesNeed: 8, changeReadiness: 7, currentFit: -4 },
-        results: { purposeful_switcher: 8 },
+        label: "Some of it matters, but I may need a more meaningful reset.",
+        dimensions: {
+          valuesNeed: 5,
+          currentFit: 1,
+          changeReadiness: 4,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "I would rather grow something of my own than climb a standard ladder.",
-        dimensions: { autonomyNeed: 9, riskTolerance: 6, growthAmbition: 6 },
-        results: { independent_builder: 9 },
+        label: "It should help me build something with more independence.",
+        dimensions: {
+          autonomyNeed: 5,
+          skillLeverage: 4,
+          growthAmbition: 3,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q09_risk",
-    section: "Risk",
-    question: "Which risk feels most acceptable to you right now?",
+    id: "q12_learning",
+    section: "Skills and leverage",
+    question: "How much learning or retraining capacity do you have right now?",
     options: [
       {
         id: "a",
-        label: "Small experiments only. I need to protect stability first.",
-        dimensions: { stabilityNeed: 8, riskTolerance: -4 },
-        results: { stability_planner: 9 },
+        label: "Very little. I need a simpler next step.",
+        dimensions: {
+          learningCapacity: 1,
+          burnoutRisk: 5,
+          stabilityNeed: 4,
+        },
+        results: {
+          stability_planner: 6,
+        },
       },
       {
         id: "b",
-        label: "Applying to better roles while keeping my current foundation.",
-        dimensions: { currentFit: 7, riskTolerance: 2, growthAmbition: 5 },
-        results: { current_path_optimizer: 7, growth_accelerator: 4 },
+        label: "Some, but I would rather improve what I already do.",
+        dimensions: {
+          learningCapacity: 2,
+          currentFit: 4,
+          skillLeverage: 4,
+        },
+        results: {
+          current_path_optimizer: 5,
+        },
       },
       {
         id: "c",
-        label: "Moving into an adjacent field where my experience still matters.",
-        dimensions: { skillLeverage: 8, riskTolerance: 4, changeReadiness: 6 },
-        results: { skill_repositioner: 9 },
+        label: "Enough to reposition my existing skills into a related path.",
+        dimensions: {
+          learningCapacity: 4,
+          skillLeverage: 5,
+          changeReadiness: 4,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label: "Learning a new direction if it feels more aligned long-term.",
-        dimensions: { valuesNeed: 7, learningCapacity: 8, riskTolerance: 5 },
-        results: { purposeful_switcher: 8 },
+        label: "Enough to learn a new direction if it truly fits me better.",
+        dimensions: {
+          learningCapacity: 5,
+          valuesNeed: 4,
+          changeReadiness: 5,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "Testing a side business, freelance offer, or independent project.",
-        dimensions: { autonomyNeed: 8, riskTolerance: 7, learningCapacity: 5 },
-        results: { independent_builder: 9 },
+        label: "High. I can learn, test, build, and iterate fast.",
+        dimensions: {
+          learningCapacity: 5,
+          autonomyNeed: 4,
+          riskTolerance: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 4,
+          growth_accelerator: 3,
+        },
+      },
+    ],
+  },
+
+  // 5. VALUES & MEANING — 3 QUESTIONS
+  {
+    id: "q13_values",
+    section: "Values and meaning",
+    question: "How important is meaning in your next career move?",
+    options: [
+      {
+        id: "a",
+        label: "Meaning matters, but stability and energy come first right now.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 4,
+          valuesNeed: 2,
+        },
+        results: {
+          stability_planner: 5,
+        },
+      },
+      {
+        id: "b",
+        label: "I want my current path to feel more useful or rewarding.",
+        dimensions: {
+          currentFit: 4,
+          valuesNeed: 3,
+          growthAmbition: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+        },
+      },
+      {
+        id: "c",
+        label: "I want to use my skills in a context that matters more.",
+        dimensions: {
+          skillLeverage: 5,
+          valuesNeed: 4,
+          changeReadiness: 3,
+        },
+        results: {
+          skill_repositioner: 5,
+        },
+      },
+      {
+        id: "d",
+        label: "It is central. Misaligned work feels increasingly unacceptable.",
+        dimensions: {
+          valuesNeed: 5,
+          currentFit: 1,
+          changeReadiness: 5,
+        },
+        results: {
+          purposeful_switcher: 7,
+        },
+      },
+      {
+        id: "e",
+        label: "Meaning matters most when I have freedom to shape the work myself.",
+        dimensions: {
+          autonomyNeed: 5,
+          valuesNeed: 4,
+          riskTolerance: 4,
+        },
+        results: {
+          independent_builder: 5,
+          purposeful_switcher: 2,
+        },
       },
     ],
   },
   {
-    id: "q10_values",
-    section: "Values",
-    question: "Which work value feels most important for your next chapter?",
+    id: "q14_work_environment",
+    section: "Values and meaning",
+    question: "Which environment would probably fit you better?",
     options: [
       {
         id: "a",
-        label: "Security and breathing room.",
-        dimensions: { stabilityNeed: 9, burnoutRisk: 4 },
-        results: { stability_planner: 8 },
+        label: "A calmer, clearer environment with less pressure.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 4,
+          riskTolerance: 1,
+        },
+        results: {
+          stability_planner: 6,
+        },
       },
       {
         id: "b",
-        label: "Recognition, better pay, and a stronger role.",
-        dimensions: { growthAmbition: 9, currentFit: 5 },
-        results: { growth_accelerator: 8, current_path_optimizer: 4 },
+        label: "A better-managed version of the same field or role type.",
+        dimensions: {
+          currentFit: 5,
+          skillLeverage: 4,
+          growthAmbition: 2,
+        },
+        results: {
+          current_path_optimizer: 6,
+        },
       },
       {
         id: "c",
-        label: "Using my strengths in a smarter place.",
-        dimensions: { skillLeverage: 9, changeReadiness: 5 },
-        results: { skill_repositioner: 8 },
+        label: "A related environment where my experience is valued differently.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          valuesNeed: 2,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label: "Meaning, identity, and doing work that feels worthwhile.",
-        dimensions: { valuesNeed: 10, changeReadiness: 5 },
-        results: { purposeful_switcher: 9 },
+        label: "An environment with stronger mission, purpose, or personal meaning.",
+        dimensions: {
+          valuesNeed: 5,
+          changeReadiness: 4,
+          currentFit: 1,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "Freedom, ownership, and control over my time.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 5 },
-        results: { independent_builder: 9 },
+        label: "An environment where I set direction, standards, and priorities.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 4,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q11_learning_capacity",
-    section: "Learning",
-    question:
-      "How much capacity do you realistically have to learn or build something new right now?",
+    id: "q15_regret",
+    section: "Values and meaning",
+    question: "What would you regret most one year from now?",
     options: [
       {
         id: "a",
-        label: "Very little. I need a lighter plan first.",
-        dimensions: { learningCapacity: -5, burnoutRisk: 8, stabilityNeed: 7 },
-        results: { stability_planner: 9 },
+        label: "Making a rushed decision while tired or unstable.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 4,
+          riskTolerance: 1,
+        },
+        results: {
+          stability_planner: 7,
+        },
       },
       {
         id: "b",
-        label: "Some capacity, if it directly improves my current career.",
-        dimensions: { learningCapacity: 4, currentFit: 6, growthAmbition: 4 },
-        results: { current_path_optimizer: 6, growth_accelerator: 3 },
+        label: "Staying underpaid, underused, or invisible in my current path.",
+        dimensions: {
+          growthAmbition: 5,
+          currentFit: 3,
+          skillLeverage: 4,
+        },
+        results: {
+          growth_accelerator: 5,
+          current_path_optimizer: 3,
+        },
       },
       {
         id: "c",
-        label: "Enough to reposition my existing skills into a better role.",
-        dimensions: { learningCapacity: 6, skillLeverage: 8, changeReadiness: 5 },
-        results: { skill_repositioner: 8 },
+        label: "Not using my existing experience to move into something better.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          growthAmbition: 3,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label: "Strong capacity if the direction feels meaningful.",
-        dimensions: { learningCapacity: 8, valuesNeed: 7, changeReadiness: 7 },
-        results: { purposeful_switcher: 8 },
+        label: "Ignoring the fact that my work no longer fits my values.",
+        dimensions: {
+          valuesNeed: 5,
+          currentFit: 1,
+          changeReadiness: 5,
+        },
+        results: {
+          purposeful_switcher: 7,
+        },
       },
       {
         id: "e",
-        label: "I can learn by building a real side project or offer.",
-        dimensions: { learningCapacity: 8, autonomyNeed: 8, riskTolerance: 5 },
-        results: { independent_builder: 8 },
+        label: "Never testing whether I could build a more independent path.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 7,
+        },
+      },
+    ],
+  },
+
+  // 6. AUTONOMY & WORK STYLE — 3 QUESTIONS
+  {
+    id: "q16_autonomy",
+    section: "Autonomy and work style",
+    question: "How much independence do you want in your work?",
+    options: [
+      {
+        id: "a",
+        label: "Less independence right now. I need structure and stability.",
+        dimensions: {
+          stabilityNeed: 5,
+          autonomyNeed: 1,
+          burnoutRisk: 3,
+        },
+        results: {
+          stability_planner: 6,
+        },
+      },
+      {
+        id: "b",
+        label: "Some independence, but inside a better role or organization.",
+        dimensions: {
+          currentFit: 4,
+          autonomyNeed: 3,
+          growthAmbition: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+        },
+      },
+      {
+        id: "c",
+        label: "More independence in a related path where my skills transfer.",
+        dimensions: {
+          skillLeverage: 5,
+          autonomyNeed: 4,
+          changeReadiness: 3,
+        },
+        results: {
+          skill_repositioner: 5,
+        },
+      },
+      {
+        id: "d",
+        label: "Enough independence to choose work that fits my values.",
+        dimensions: {
+          valuesNeed: 4,
+          autonomyNeed: 4,
+          changeReadiness: 4,
+        },
+        results: {
+          purposeful_switcher: 5,
+        },
+      },
+      {
+        id: "e",
+        label: "A lot. I want control over direction, time, decisions, and standards.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 7,
+        },
       },
     ],
   },
   {
-    id: "q12_job_search",
-    section: "Market",
-    question:
-      "If you started looking for opportunities tomorrow, where would you begin?",
+    id: "q17_work_style",
+    section: "Autonomy and work style",
+    question: "Which work style sounds most natural to you?",
     options: [
       {
         id: "a",
-        label:
-          "I would first reduce stress and clarify what I can realistically handle.",
-        dimensions: { stabilityNeed: 8, burnoutRisk: 5 },
-        results: { stability_planner: 8 },
+        label: "Clear expectations, predictable pace, and low chaos.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 3,
+          riskTolerance: 1,
+        },
+        results: {
+          stability_planner: 6,
+        },
       },
       {
         id: "b",
-        label: "Similar roles at better companies or with better pay.",
-        dimensions: { currentFit: 8, growthAmbition: 6 },
-        results: { current_path_optimizer: 8, growth_accelerator: 4 },
+        label: "A structured role where I can grow and become more valuable.",
+        dimensions: {
+          currentFit: 4,
+          growthAmbition: 5,
+          skillLeverage: 3,
+        },
+        results: {
+          growth_accelerator: 5,
+          current_path_optimizer: 4,
+        },
       },
       {
         id: "c",
-        label: "Adjacent roles that use my experience differently.",
-        dimensions: { skillLeverage: 9, changeReadiness: 5 },
-        results: { skill_repositioner: 10 },
+        label: "Problem-solving in a new context using skills I already have.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          learningCapacity: 3,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label: "Roles or fields that match my values more closely.",
-        dimensions: { valuesNeed: 8, changeReadiness: 7 },
-        results: { purposeful_switcher: 9 },
+        label: "Work that feels human, meaningful, creative, or personally aligned.",
+        dimensions: {
+          valuesNeed: 5,
+          learningCapacity: 3,
+          changeReadiness: 3,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "Freelance, consulting, small business, or flexible work options.",
-        dimensions: { autonomyNeed: 9, riskTolerance: 5 },
-        results: { independent_builder: 10 },
+        label: "Building, leading, selling, freelancing, or creating something directly.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          growthAmbition: 5,
+        },
+        results: {
+          independent_builder: 6,
+          growth_accelerator: 2,
+        },
       },
     ],
   },
   {
-    id: "q13_regret",
-    section: "Future regret",
-    question: "Which future regret worries you most?",
+    id: "q18_decision_control",
+    section: "Autonomy and work style",
+    question: "What kind of control do you most want?",
     options: [
       {
         id: "a",
-        label: "Making a rushed move that hurts my stability.",
-        dimensions: { stabilityNeed: 9, riskTolerance: -4 },
-        results: { stability_planner: 9 },
+        label: "Control over stress, schedule, and stability.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 4,
+          autonomyNeed: 2,
+        },
+        results: {
+          stability_planner: 6,
+        },
       },
       {
         id: "b",
-        label:
-          "Staying underpaid or under-recognized when I could have grown.",
-        dimensions: { growthAmbition: 9, currentFit: 5 },
-        results: { growth_accelerator: 9, current_path_optimizer: 3 },
+        label: "Control over growth, responsibility, and recognition.",
+        dimensions: {
+          growthAmbition: 5,
+          currentFit: 4,
+          skillLeverage: 3,
+        },
+        results: {
+          growth_accelerator: 5,
+          current_path_optimizer: 3,
+        },
       },
       {
         id: "c",
-        label: "Not using my experience in a better-fitting way.",
-        dimensions: { skillLeverage: 9, changeReadiness: 5 },
-        results: { skill_repositioner: 9 },
+        label: "Control over how my existing skills are positioned.",
+        dimensions: {
+          skillLeverage: 5,
+          autonomyNeed: 3,
+          changeReadiness: 4,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
       },
       {
         id: "d",
-        label: "Spending more years in work that does not feel meaningful.",
-        dimensions: { valuesNeed: 10, changeReadiness: 6 },
-        results: { purposeful_switcher: 10 },
+        label: "Control over whether my work matches my values.",
+        dimensions: {
+          valuesNeed: 5,
+          autonomyNeed: 3,
+          changeReadiness: 4,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "Never building something independent or flexible for myself.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 5 },
-        results: { independent_builder: 10 },
+        label: "Control over the whole path, not just the next job.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 7,
+        },
+      },
+    ],
+  },
+
+  // 7. CHANGE READINESS — 4 QUESTIONS
+  {
+    id: "q19_readiness",
+    section: "Change readiness",
+    question: "How ready are you to take action in the next 30 days?",
+    options: [
+      {
+        id: "a",
+        label: "I need to stabilize before taking major action.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 4,
+          changeReadiness: 1,
+        },
+        results: {
+          stability_planner: 7,
+        },
+      },
+      {
+        id: "b",
+        label: "I can improve my current role, positioning, or opportunities.",
+        dimensions: {
+          currentFit: 4,
+          growthAmbition: 4,
+          changeReadiness: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+          growth_accelerator: 3,
+        },
+      },
+      {
+        id: "c",
+        label: "I can research and test a related path.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          learningCapacity: 4,
+        },
+        results: {
+          skill_repositioner: 6,
+        },
+      },
+      {
+        id: "d",
+        label: "I can begin moving toward a more meaningful direction.",
+        dimensions: {
+          valuesNeed: 5,
+          changeReadiness: 5,
+          learningCapacity: 4,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
+      },
+      {
+        id: "e",
+        label: "I can start testing an independent offer, project, or path.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          changeReadiness: 5,
+        },
+        results: {
+          independent_builder: 7,
+        },
       },
     ],
   },
   {
-    id: "q14_support",
-    section: "Support",
-    question: "What type of support would help you most right now?",
+    id: "q20_next_step",
+    section: "Change readiness",
+    question: "Which next step feels most realistic?",
     options: [
       {
         id: "a",
-        label:
-          "A calmer, safer plan that accounts for real-life responsibilities.",
-        dimensions: { stabilityNeed: 9, burnoutRisk: 4 },
-        results: { stability_planner: 9 },
+        label: "Audit my energy, money, time, and responsibilities first.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 3,
+          learningCapacity: 2,
+        },
+        results: {
+          stability_planner: 7,
+        },
       },
       {
         id: "b",
-        label: "A better strategy for advancing or improving my current path.",
-        dimensions: { currentFit: 8, growthAmbition: 7 },
-        results: { current_path_optimizer: 7, growth_accelerator: 6 },
+        label: "Ask for better responsibility, pay, clarity, or growth.",
+        dimensions: {
+          currentFit: 4,
+          growthAmbition: 5,
+          skillLeverage: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+          growth_accelerator: 4,
+        },
       },
       {
         id: "c",
-        label: "Help translating my experience into new opportunities.",
-        dimensions: { skillLeverage: 10, changeReadiness: 5 },
-        results: { skill_repositioner: 10 },
+        label: "Map my transferable skills into 2–3 related options.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          learningCapacity: 4,
+        },
+        results: {
+          skill_repositioner: 7,
+        },
       },
       {
         id: "d",
-        label: "Help identifying work that fits my values and identity.",
-        dimensions: { valuesNeed: 10, changeReadiness: 5 },
-        results: { purposeful_switcher: 10 },
+        label: "Explore work that better matches my values and identity.",
+        dimensions: {
+          valuesNeed: 5,
+          changeReadiness: 4,
+          learningCapacity: 4,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "Help choosing and testing an independent income direction.",
-        dimensions: { autonomyNeed: 9, riskTolerance: 5 },
-        results: { independent_builder: 9 },
+        label: "Build a small offer, portfolio, service, or independent test.",
+        dimensions: {
+          autonomyNeed: 5,
+          growthAmbition: 4,
+          riskTolerance: 5,
+        },
+        results: {
+          independent_builder: 7,
+        },
       },
     ],
   },
   {
-    id: "q15_work_environment",
-    section: "Environment",
-    question: "Which work environment sounds healthiest for your next stage?",
+    id: "q21_biggest_fear",
+    section: "Change readiness",
+    question: "What is your biggest fear about changing direction?",
     options: [
       {
         id: "a",
-        label: "Predictable, calm, and financially stable.",
-        dimensions: { stabilityNeed: 10, burnoutRisk: 3, riskTolerance: -3 },
-        results: { stability_planner: 10 },
+        label: "Losing stability or making my life more stressful.",
+        dimensions: {
+          stabilityNeed: 5,
+          riskTolerance: 1,
+          burnoutRisk: 3,
+        },
+        results: {
+          stability_planner: 7,
+        },
       },
       {
         id: "b",
-        label:
-          "Professional, better managed, and more rewarding than my current environment.",
-        dimensions: { currentFit: 8, growthAmbition: 6 },
-        results: { current_path_optimizer: 8, growth_accelerator: 4 },
+        label: "Leaving too early when my current path may still have potential.",
+        dimensions: {
+          currentFit: 4,
+          stabilityNeed: 3,
+          growthAmbition: 3,
+        },
+        results: {
+          current_path_optimizer: 5,
+        },
       },
       {
         id: "c",
-        label: "A place where my existing skills solve different problems.",
-        dimensions: { skillLeverage: 8, changeReadiness: 5 },
-        results: { skill_repositioner: 8 },
+        label: "Starting over and wasting my previous experience.",
+        dimensions: {
+          skillLeverage: 5,
+          stabilityNeed: 3,
+          changeReadiness: 3,
+        },
+        results: {
+          skill_repositioner: 7,
+        },
       },
       {
         id: "d",
-        label: "A mission, culture, or subject area I actually care about.",
-        dimensions: { valuesNeed: 10, changeReadiness: 6 },
-        results: { purposeful_switcher: 9 },
+        label: "Choosing another path that still does not feel meaningful.",
+        dimensions: {
+          valuesNeed: 5,
+          changeReadiness: 4,
+          learningCapacity: 3,
+        },
+        results: {
+          purposeful_switcher: 6,
+        },
       },
       {
         id: "e",
-        label: "Flexible, self-directed, and less dependent on office politics.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 5 },
-        results: { independent_builder: 9 },
+        label: "Never trying to create something more independent.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 4,
+          growthAmbition: 5,
+        },
+        results: {
+          independent_builder: 6,
+        },
       },
     ],
   },
   {
-    id: "q16_identity",
-    section: "Identity",
-    question:
-      "Which identity feels closest to who you want to become professionally?",
+    id: "q22_best_outcome",
+    section: "Change readiness",
+    question: "What outcome would make this assessment most useful for you?",
     options: [
       {
         id: "a",
-        label: "A stable professional with more breathing room.",
-        dimensions: { stabilityNeed: 9, burnoutRisk: 3 },
-        results: { stability_planner: 9 },
+        label: "A calmer plan that helps me stop making stressed decisions.",
+        dimensions: {
+          stabilityNeed: 5,
+          burnoutRisk: 4,
+          riskTolerance: 1,
+        },
+        results: {
+          stability_planner: 7,
+        },
       },
       {
         id: "b",
-        label: "A stronger version of myself in my current career area.",
-        dimensions: { currentFit: 9, growthAmbition: 7 },
-        results: { current_path_optimizer: 7, growth_accelerator: 7 },
+        label: "A clear way to improve my current career path.",
+        dimensions: {
+          currentFit: 5,
+          growthAmbition: 4,
+          skillLeverage: 3,
+        },
+        results: {
+          current_path_optimizer: 6,
+          growth_accelerator: 2,
+        },
       },
       {
         id: "c",
-        label:
-          "A professional who uses past experience in a smarter new direction.",
-        dimensions: { skillLeverage: 10, changeReadiness: 5 },
-        results: { skill_repositioner: 10 },
+        label: "A smarter way to move using the experience I already have.",
+        dimensions: {
+          skillLeverage: 5,
+          changeReadiness: 4,
+          learningCapacity: 3,
+        },
+        results: {
+          skill_repositioner: 7,
+        },
       },
       {
         id: "d",
-        label: "Someone who does work that feels more meaningful and aligned.",
-        dimensions: { valuesNeed: 10, changeReadiness: 6 },
-        results: { purposeful_switcher: 10 },
+        label: "Permission and structure to explore a more meaningful direction.",
+        dimensions: {
+          valuesNeed: 5,
+          changeReadiness: 5,
+          learningCapacity: 4,
+        },
+        results: {
+          purposeful_switcher: 7,
+        },
       },
       {
         id: "e",
-        label:
-          "Someone who builds their own path instead of waiting for permission.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 6, growthAmbition: 5 },
-        results: { independent_builder: 10 },
-      },
-    ],
-  },
-  {
-    id: "q17_obstacle",
-    section: "Obstacle",
-    question: "What is most likely to stop you from making progress?",
-    options: [
-      {
-        id: "a",
-        label: "Stress, exhaustion, or financial pressure.",
-        dimensions: { stabilityNeed: 9, burnoutRisk: 9, riskTolerance: -3 },
-        results: { stability_planner: 10 },
-      },
-      {
-        id: "b",
-        label:
-          "Not asking for better opportunities or not positioning myself strongly.",
-        dimensions: { growthAmbition: 8, currentFit: 5 },
-        results: { growth_accelerator: 8, current_path_optimizer: 4 },
-      },
-      {
-        id: "c",
-        label: "Not knowing how to explain my transferable value.",
-        dimensions: { skillLeverage: 9, changeReadiness: 5 },
-        results: { skill_repositioner: 10 },
-      },
-      {
-        id: "d",
-        label: "Fear of choosing the wrong new direction.",
-        dimensions: { valuesNeed: 7, changeReadiness: 5, learningCapacity: 4 },
-        results: { purposeful_switcher: 8 },
-      },
-      {
-        id: "e",
-        label: "Lack of structure around my own ideas.",
-        dimensions: { autonomyNeed: 7, riskTolerance: 4, learningCapacity: 5 },
-        results: { independent_builder: 8 },
-      },
-    ],
-  },
-  {
-    id: "q18_preferred_next_step",
-    section: "Next step",
-    question: "Which next step feels most realistic in the next 30 days?",
-    options: [
-      {
-        id: "a",
-        label:
-          "Create a safer plan and recover enough energy to think clearly.",
-        dimensions: { stabilityNeed: 9, burnoutRisk: 6 },
-        results: { stability_planner: 9 },
-      },
-      {
-        id: "b",
-        label:
-          "Update my résumé/LinkedIn and look for better versions of my current role.",
-        dimensions: { currentFit: 8, growthAmbition: 6, skillLeverage: 5 },
-        results: { current_path_optimizer: 8, growth_accelerator: 4 },
-      },
-      {
-        id: "c",
-        label: "Map my transferable skills and test adjacent roles.",
-        dimensions: { skillLeverage: 10, changeReadiness: 6 },
-        results: { skill_repositioner: 10 },
-      },
-      {
-        id: "d",
-        label: "Research and test a more meaningful career direction.",
-        dimensions: { valuesNeed: 9, learningCapacity: 6, changeReadiness: 7 },
-        results: { purposeful_switcher: 9 },
-      },
-      {
-        id: "e",
-        label:
-          "Build or test a small independent offer, project, or side path.",
-        dimensions: { autonomyNeed: 9, riskTolerance: 6, learningCapacity: 6 },
-        results: { independent_builder: 10 },
-      },
-    ],
-  },
-  {
-    id: "q19_manager_role",
-    section: "Role design",
-    question: "How do you feel about more responsibility or leadership?",
-    options: [
-      {
-        id: "a",
-        label: "Not now. I need less pressure before more responsibility.",
-        dimensions: { burnoutRisk: 8, stabilityNeed: 7, growthAmbition: -3 },
-        results: { stability_planner: 8 },
-      },
-      {
-        id: "b",
-        label: "I would like it if the role, pay, and support were right.",
-        dimensions: { growthAmbition: 10, currentFit: 7 },
-        results: { growth_accelerator: 9, current_path_optimizer: 4 },
-      },
-      {
-        id: "c",
-        label: "Maybe, but probably in a different context than my current one.",
-        dimensions: { skillLeverage: 7, changeReadiness: 5, growthAmbition: 4 },
-        results: { skill_repositioner: 7 },
-      },
-      {
-        id: "d",
-        label: "Only if the mission or work itself feels worth leading.",
-        dimensions: { valuesNeed: 8, growthAmbition: 5 },
-        results: { purposeful_switcher: 7, growth_accelerator: 2 },
-      },
-      {
-        id: "e",
-        label: "I would rather lead my own project, business, or client work.",
-        dimensions: { autonomyNeed: 9, growthAmbition: 6, riskTolerance: 5 },
-        results: { independent_builder: 9 },
-      },
-    ],
-  },
-  {
-    id: "q20_change_timeline",
-    section: "Timing",
-    question: "What timeline feels most realistic for a serious career move?",
-    options: [
-      {
-        id: "a",
-        label: "I need 3–12 months to stabilize before making a major move.",
-        dimensions: { stabilityNeed: 10, riskTolerance: -4 },
-        results: { stability_planner: 10 },
-      },
-      {
-        id: "b",
-        label: "I could start looking for a better role soon.",
-        dimensions: { currentFit: 8, growthAmbition: 6, riskTolerance: 3 },
-        results: { current_path_optimizer: 8, growth_accelerator: 4 },
-      },
-      {
-        id: "c",
-        label: "I could test adjacent opportunities within 1–3 months.",
-        dimensions: { skillLeverage: 8, changeReadiness: 6, riskTolerance: 4 },
-        results: { skill_repositioner: 9 },
-      },
-      {
-        id: "d",
-        label:
-          "I am ready to explore a real pivot, but I want to test before committing.",
-        dimensions: { valuesNeed: 8, changeReadiness: 8, learningCapacity: 6 },
-        results: { purposeful_switcher: 9 },
-      },
-      {
-        id: "e",
-        label:
-          "I can begin building an independent path immediately on the side.",
-        dimensions: { autonomyNeed: 9, riskTolerance: 6, learningCapacity: 6 },
-        results: { independent_builder: 9 },
-      },
-    ],
-  },
-  {
-    id: "q21_success_measure",
-    section: "Success measure",
-    question: "How would you measure a successful next career move?",
-    options: [
-      {
-        id: "a",
-        label: "More stability, less stress, and a plan I can actually sustain.",
-        dimensions: { stabilityNeed: 10, burnoutRisk: 5 },
-        results: { stability_planner: 10 },
-      },
-      {
-        id: "b",
-        label: "Better pay, role quality, recognition, or professional growth.",
-        dimensions: { growthAmbition: 10, currentFit: 6 },
-        results: { growth_accelerator: 9, current_path_optimizer: 5 },
-      },
-      {
-        id: "c",
-        label: "Using my existing strengths in a role that fits better.",
-        dimensions: { skillLeverage: 10, changeReadiness: 5 },
-        results: { skill_repositioner: 10 },
-      },
-      {
-        id: "d",
-        label:
-          "Doing work that feels more meaningful and aligned with my life now.",
-        dimensions: { valuesNeed: 10, changeReadiness: 6 },
-        results: { purposeful_switcher: 10 },
-      },
-      {
-        id: "e",
-        label:
-          "Having more freedom, flexibility, and ownership over my income path.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 5 },
-        results: { independent_builder: 10 },
-      },
-    ],
-  },
-  {
-    id: "q22_application_confidence",
-    section: "Confidence",
-    question:
-      "How confident are you that your current profile would attract better opportunities?",
-    options: [
-      {
-        id: "a",
-        label: "Not confident. I first need clarity and stability.",
-        dimensions: { stabilityNeed: 7, skillLeverage: -2, burnoutRisk: 4 },
-        results: { stability_planner: 7 },
-      },
-      {
-        id: "b",
-        label: "Somewhat confident, but I need to present myself better.",
-        dimensions: { skillLeverage: 6, currentFit: 6, growthAmbition: 6 },
-        results: { current_path_optimizer: 6, growth_accelerator: 5 },
-      },
-      {
-        id: "c",
-        label:
-          "I have strong experience, but it needs to be reframed for new roles.",
-        dimensions: { skillLeverage: 10, changeReadiness: 5 },
-        results: { skill_repositioner: 10 },
-      },
-      {
-        id: "d",
-        label: "I may need new proof or learning before switching direction.",
-        dimensions: { learningCapacity: 7, valuesNeed: 6, changeReadiness: 6 },
-        results: { purposeful_switcher: 7 },
-      },
-      {
-        id: "e",
-        label:
-          "I am more interested in attracting clients, customers, or project opportunities.",
-        dimensions: { autonomyNeed: 9, skillLeverage: 6, riskTolerance: 5 },
-        results: { independent_builder: 9 },
-      },
-    ],
-  },
-  {
-    id: "q23_outside_work",
-    section: "Life fit",
-    question: "How much should your next career move support your life outside work?",
-    options: [
-      {
-        id: "a",
-        label: "A lot. My life responsibilities need to come first.",
-        dimensions: { stabilityNeed: 10, riskTolerance: -3 },
-        results: { stability_planner: 10 },
-      },
-      {
-        id: "b",
-        label: "I want better balance while still progressing professionally.",
-        dimensions: { currentFit: 7, growthAmbition: 5, stabilityNeed: 4 },
-        results: { current_path_optimizer: 7, growth_accelerator: 3 },
-      },
-      {
-        id: "c",
-        label:
-          "I want a role that uses my skills without the same old tradeoffs.",
-        dimensions: { skillLeverage: 8, changeReadiness: 5 },
-        results: { skill_repositioner: 8 },
-      },
-      {
-        id: "d",
-        label:
-          "I want work that fits the person I am becoming, not just my résumé.",
-        dimensions: { valuesNeed: 10, changeReadiness: 6 },
-        results: { purposeful_switcher: 9 },
-      },
-      {
-        id: "e",
-        label:
-          "Flexibility and control are major reasons I want a new direction.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 5 },
-        results: { independent_builder: 9 },
-      },
-    ],
-  },
-  {
-    id: "q24_external_validation",
-    section: "Decision pattern",
-    question: "What do you usually need before making a career decision?",
-    options: [
-      {
-        id: "a",
-        label: "Safety, numbers, and a plan that will not create chaos.",
-        dimensions: { stabilityNeed: 9, riskTolerance: -3 },
-        results: { stability_planner: 9 },
-      },
-      {
-        id: "b",
-        label: "Evidence that a better role or company is actually available.",
-        dimensions: { currentFit: 7, growthAmbition: 5, skillLeverage: 4 },
-        results: { current_path_optimizer: 7, growth_accelerator: 3 },
-      },
-      {
-        id: "c",
-        label: "A clear link between what I know and where I want to go.",
-        dimensions: { skillLeverage: 10, changeReadiness: 5 },
-        results: { skill_repositioner: 10 },
-      },
-      {
-        id: "d",
-        label: "A feeling that the direction is meaningful enough to commit to.",
-        dimensions: { valuesNeed: 9, changeReadiness: 6 },
-        results: { purposeful_switcher: 9 },
-      },
-      {
-        id: "e",
-        label: "Proof that people would pay for what I can build or offer.",
-        dimensions: { autonomyNeed: 8, riskTolerance: 5, skillLeverage: 5 },
-        results: { independent_builder: 9 },
-      },
-    ],
-  },
-  {
-    id: "q25_learning_vs_earning",
-    section: "Priority",
-    question: "Right now, which priority feels strongest?",
-    options: [
-      {
-        id: "a",
-        label: "Protecting income and reducing pressure.",
-        dimensions: { stabilityNeed: 10, burnoutRisk: 5 },
-        results: { stability_planner: 10 },
-      },
-      {
-        id: "b",
-        label: "Earning more from the career capital I already have.",
-        dimensions: { growthAmbition: 9, currentFit: 7, skillLeverage: 6 },
-        results: { growth_accelerator: 9, current_path_optimizer: 5 },
-      },
-      {
-        id: "c",
-        label: "Moving my skills into a better opportunity area.",
-        dimensions: { skillLeverage: 10, changeReadiness: 6 },
-        results: { skill_repositioner: 10 },
-      },
-      {
-        id: "d",
-        label: "Learning something new because my current direction feels wrong.",
-        dimensions: { valuesNeed: 9, learningCapacity: 7, changeReadiness: 7 },
-        results: { purposeful_switcher: 9 },
-      },
-      {
-        id: "e",
-        label: "Creating income with more control and independence.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 6, growthAmbition: 5 },
-        results: { independent_builder: 10 },
-      },
-    ],
-  },
-  {
-    id: "q26_work_dislike",
-    section: "Dislike pattern",
-    question: "What do you dislike most about your current or recent work?",
-    options: [
-      {
-        id: "a",
-        label: "The pressure, exhaustion, or instability it creates.",
-        dimensions: { burnoutRisk: 10, stabilityNeed: 8 },
-        results: { stability_planner: 10 },
-      },
-      {
-        id: "b",
-        label: "The environment, management, pay, or lack of growth.",
-        dimensions: { currentFit: 7, growthAmbition: 8 },
-        results: { current_path_optimizer: 8, growth_accelerator: 5 },
-      },
-      {
-        id: "c",
-        label:
-          "That my strongest skills are not being used in the right way.",
-        dimensions: { skillLeverage: 9, changeReadiness: 5 },
-        results: { skill_repositioner: 9 },
-      },
-      {
-        id: "d",
-        label: "That the work itself does not feel meaningful anymore.",
-        dimensions: { valuesNeed: 10, currentFit: -4, changeReadiness: 6 },
-        results: { purposeful_switcher: 10 },
-      },
-      {
-        id: "e",
-        label:
-          "That I have too little control over my time, decisions, or income.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 4 },
-        results: { independent_builder: 10 },
-      },
-    ],
-  },
-  {
-    id: "q27_one_year",
-    section: "One-year vision",
-    question: "One year from now, which outcome would make you feel proudest?",
-    options: [
-      {
-        id: "a",
-        label: "I feel stable, healthier, and no longer trapped by pressure.",
-        dimensions: { stabilityNeed: 10, burnoutRisk: 5 },
-        results: { stability_planner: 10 },
-      },
-      {
-        id: "b",
-        label: "I have a better role, stronger pay, and more recognition.",
-        dimensions: { growthAmbition: 10, currentFit: 7 },
-        results: { growth_accelerator: 9, current_path_optimizer: 5 },
-      },
-      {
-        id: "c",
-        label: "I successfully moved my experience into a better-fitting path.",
-        dimensions: { skillLeverage: 10, changeReadiness: 7 },
-        results: { skill_repositioner: 10 },
-      },
-      {
-        id: "d",
-        label: "I am doing work that feels more aligned with who I am now.",
-        dimensions: { valuesNeed: 10, changeReadiness: 7 },
-        results: { purposeful_switcher: 10 },
-      },
-      {
-        id: "e",
-        label:
-          "I built an independent income stream, offer, or flexible work path.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 6 },
-        results: { independent_builder: 10 },
-      },
-    ],
-  },
-  {
-    id: "q28_final_choice",
-    section: "Final priority",
-    question:
-      "If your report focused on only one thing, what should it help you do?",
-    options: [
-      {
-        id: "a",
-        label: "Create a safe and realistic transition plan.",
-        dimensions: { stabilityNeed: 10, riskTolerance: -3 },
-        results: { stability_planner: 12 },
-      },
-      {
-        id: "b",
-        label:
-          "Improve, upgrade, or reposition inside my current career direction.",
-        dimensions: { currentFit: 9, growthAmbition: 7 },
-        results: { current_path_optimizer: 10, growth_accelerator: 5 },
-      },
-      {
-        id: "c",
-        label:
-          "Use my existing skills to move into a better-fitting opportunity.",
-        dimensions: { skillLeverage: 10, changeReadiness: 7 },
-        results: { skill_repositioner: 12 },
-      },
-      {
-        id: "d",
-        label: "Explore a more meaningful career switch.",
-        dimensions: { valuesNeed: 10, learningCapacity: 7, changeReadiness: 8 },
-        results: { purposeful_switcher: 12 },
-      },
-      {
-        id: "e",
-        label: "Build a more independent or flexible work path.",
-        dimensions: { autonomyNeed: 10, riskTolerance: 7, growthAmbition: 5 },
-        results: { independent_builder: 12 },
+        label: "A practical first step toward a more independent career path.",
+        dimensions: {
+          autonomyNeed: 5,
+          riskTolerance: 5,
+          growthAmbition: 4,
+        },
+        results: {
+          independent_builder: 7,
+        },
       },
     ],
   },
