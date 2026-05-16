@@ -17,34 +17,46 @@ export default function PaddleCheckoutButton({
   const [isOpening, setIsOpening] = useState(false);
   const [error, setError] = useState("");
 
+  const clientToken = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
   const priceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID;
   const appUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://careerfitfinder.space";
+  const paddleEnvironment = process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT;
 
   useEffect(() => {
     async function loadPaddle() {
-      const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
-
-      if (!token) {
+      if (!clientToken) {
         setError("Missing Paddle client-side token.");
         return;
       }
 
-      const paddleInstance = await initializePaddle({
-        token,
-      });
+      try {
+        const paddleInstance = await initializePaddle({
+          token: clientToken,
+          environment:
+            paddleEnvironment === "sandbox" ? "sandbox" : undefined,
+        });
 
-      setPaddle(paddleInstance);
+        if (!paddleInstance) {
+          setError("Unable to initialize Paddle.");
+          return;
+        }
+
+        setPaddle(paddleInstance);
+      } catch (err) {
+        console.error("Paddle initialization error:", err);
+        setError("Unable to initialize Paddle checkout.");
+      }
     }
 
     void loadPaddle();
-  }, []);
+  }, [clientToken, paddleEnvironment]);
 
-  function openCheckout() {
+  async function handleCheckout() {
     setError("");
 
-    if (!paddle) {
-      setError("Paddle checkout is still loading. Try again in a moment.");
+    if (!email.trim()) {
+      setError("Please enter your email before continuing.");
       return;
     }
 
@@ -53,67 +65,84 @@ export default function PaddleCheckoutButton({
       return;
     }
 
-    setIsOpening(true);
+    if (!paddle) {
+      setError("Paddle is still loading. Please try again.");
+      return;
+    }
 
-    paddle.Checkout.open({
-      settings: {
-        displayMode: "overlay",
-        variant: "one-page",
-        theme: "light",
-        successUrl: `${appUrl}/result/${accessToken}`,
-      },
-      items: [
-        {
-          priceId,
-          quantity: 1,
+    try {
+      setIsOpening(true);
+
+      paddle.Checkout.open({
+        settings: {
+          displayMode: "overlay",
+          variant: "one-page",
+          theme: "light",
+          successUrl: `${appUrl}/result/${accessToken}`,
         },
-      ],
-      customer: email.trim()
-        ? {
-            email: email.trim(),
-          }
-        : undefined,
-      customData: {
-        sessionId,
-        product: "career_fit_finder_report",
-      },
-    });
-
-    setIsOpening(false);
+        items: [
+          {
+            priceId,
+            quantity: 1,
+          },
+        ],
+        customer: {
+          email: email.trim(),
+        },
+        customData: {
+          sessionId,
+          accessToken,
+          source: "career-fit-finder",
+        },
+      });
+    } catch (err) {
+      console.error("Paddle checkout error:", err);
+      setError("Paddle was unable to open checkout.");
+    } finally {
+      setIsOpening(false);
+    }
   }
 
   return (
-    <div className="mt-6">
-      <div className="rounded-3xl bg-white/10 p-4">
-        <label className="text-sm font-medium text-white/60">
+    <div className="mt-8">
+      <div>
+        <label
+          htmlFor="checkout-email"
+          className="mb-2 block text-sm font-medium text-[#f4ddc8]"
+        >
           Email for result access
         </label>
 
         <input
+          id="checkout-email"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder="you@example.com"
-          className="mt-2 w-full rounded-2xl border border-white/10 bg-white px-4 py-4 text-black outline-none placeholder:text-black/35"
+          className="w-full rounded-2xl border border-white/15 bg-white px-5 py-4 text-base text-[#2b2019] outline-none transition placeholder:text-[#8d8178] focus:border-[#d9a679] focus:ring-2 focus:ring-[#d9a679]/30"
         />
       </div>
 
       <button
-        onClick={openCheckout}
+        type="button"
+        onClick={handleCheckout}
         disabled={isOpening}
-        className="mt-6 w-full rounded-full bg-white px-8 py-4 text-base font-semibold text-black transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-5 w-full rounded-2xl bg-[#f4d7ba] px-6 py-4 text-base font-semibold text-[#2e2119] transition hover:bg-[#efcfad] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isOpening ? "Opening checkout..." : "Unlock My Report — $1.99"}
       </button>
 
-      {error && (
-        <p className="mt-4 rounded-2xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+      {error ? (
+        <div className="mt-4 rounded-2xl border border-[#d99670] bg-[#fff1e8] px-4 py-3 text-sm text-[#8a4b27]">
           {error}
-        </p>
-      )}
+        </div>
+      ) : null}
 
-      <p className="mt-4 text-center text-xs leading-6 text-white/40">
-        Secure checkout powered by Paddle. After payment, your private result
-        link will open automatically.
+      <p className="mt-4 text-sm leading-6 text-white/65">
+        Secure payment powered by Paddle. After payment, your private result
+        page will open automatically.
       </p>
     </div>
   );
