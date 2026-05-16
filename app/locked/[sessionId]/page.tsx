@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getQuizSessionById } from "../../../src/lib/quiz-sessions";
 import { getPublicResultPreview } from "../../../src/lib/career-path/scoring";
+import PaddleCheckoutButton from "../../components/PaddleCheckoutButton";
 
 type PageProps = {
   params: Promise<{
@@ -126,17 +127,18 @@ export default async function LockedReportPage({ params }: PageProps) {
                 Email for result access
               </label>
 
-              <input
-                placeholder="you@example.com"
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-white px-4 py-4 text-black outline-none placeholder:text-black/35"
-              />
+              
+            
             </div>
 
             <Link
               href={`/result/${session.access_token}`}
               className="mt-6 block w-full rounded-full bg-white px-8 py-4 text-center text-base font-semibold text-black transition hover:bg-white/90"
             >
-              Preview Unlock — $1.99
+              <PaddleCheckoutButton
+  sessionId={session.id}
+  accessToken={session.access_token}
+/>
             </Link>
 
             <p className="mt-4 text-center text-xs leading-6 text-white/40">
