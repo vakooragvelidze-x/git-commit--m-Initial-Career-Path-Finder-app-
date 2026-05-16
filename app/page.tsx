@@ -1,7 +1,9 @@
+import ReviewCarousel from "./components/ReviewCarousel";
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#f7f3ec] text-[#171717]">
-      <section className="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 py-16 text-center">
+      <section className="mx-auto flex max-w-6xl flex-col items-center justify-center px-6 pb-16 pt-20 text-center">
         <div className="mb-6 rounded-full border border-black/10 bg-white px-4 py-2 text-sm text-black/60 shadow-sm">
           5-minute self-assessment for adults 30+
         </div>
@@ -62,6 +64,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ReviewCarousel />
 
       <footer className="border-t border-black/10 bg-white/70 px-6 py-10 text-center">
         <div className="mx-auto max-w-6xl">
