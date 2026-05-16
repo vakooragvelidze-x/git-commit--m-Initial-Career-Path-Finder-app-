@@ -62,22 +62,35 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <footer className="border-t border-black/10 bg-white/70 px-6 py-10 text-center">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-sm text-black/45">
+            Career Fit Finder is a practical self-assessment tool for career
+            clarity. It is not professional career counseling or a guarantee of
+            employment outcomes.
+          </p>
+
+          <div className="mt-5 flex flex-wrap justify-center gap-5 text-sm font-medium text-black/55">
+            <a href="/pricing" className="transition hover:text-black">
+              Pricing
+            </a>
+            <a href="/terms" className="transition hover:text-black">
+              Terms of Service
+            </a>
+            <a href="/privacy" className="transition hover:text-black">
+              Privacy Policy
+            </a>
+            <a href="/refund" className="transition hover:text-black">
+              Refund Policy
+            </a>
+          </div>
+
+          <p className="mt-5 text-xs text-black/35">
+            © 2026 Career Fit Finder. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </main>
-  )
-  ;<footer className="border-t border-black/10 bg-white/60 px-6 py-8 text-center text-sm text-black/50">
-  <div className="flex flex-wrap justify-center gap-5">
-    <a href="/pricing" className="hover:text-black">
-      Pricing
-    </a>
-    <a href="/terms" className="hover:text-black">
-      Terms
-    </a>
-    <a href="/privacy" className="hover:text-black">
-      Privacy
-    </a>
-    <a href="/refund" className="hover:text-black">
-      Refund Policy
-    </a>
-  </div>
-</footer>
+  );
 }
