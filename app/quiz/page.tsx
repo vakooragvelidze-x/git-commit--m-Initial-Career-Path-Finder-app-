@@ -1,15 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { QUESTIONS } from "../../src/lib/career-path/questions";
-import {
-  calculateCareerPathReport,
-  getPublicResultPreview,
-} from "../../src/lib/career-path/scoring";
 
-type Screen = "quiz" | "analysis" | "locked" | "result";
+type Screen = "quiz" | "analysis" | "error";
 
 type SavedSession = {
   sessionId: string;
@@ -23,29 +19,24 @@ type SavedSession = {
   };
 };
 
-export default function QuizPage() {const router = useRouter();
+export default function QuizPage() {
+  const router = useRouter();
+
   const [screen, setScreen] = useState<Screen>("quiz");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [email, setEmail] = useState("");
   const [savedSession, setSavedSession] = useState<SavedSession | null>(null);
   const [saveError, setSaveError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const currentQuestion = QUESTIONS[currentIndex];
   const totalQuestions = QUESTIONS.length;
   const answeredCount = Object.keys(answers).length;
   const progress = Math.round((answeredCount / totalQuestions) * 100);
 
-  const report = useMemo(() => {
-    if (answeredCount === 0) return null;
-    return calculateCareerPathReport(answers);
-  }, [answers, answeredCount]);
-
-  const preview = report ? getPublicResultPreview(report) : null;
-  const lockedPreview = savedSession?.preview || preview;
-
   async function saveQuizSession(finalAnswers: Record<string, string>) {
     setSaveError("");
+    setIsSaving(true);
 
     try {
       const minimumLoadingTime = new Promise((resolve) =>
@@ -63,15 +54,14 @@ export default function QuizPage() {const router = useRouter();
       });
 
       const [, response] = await Promise.all([minimumLoadingTime, request]);
-
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.error || "Could not save quiz session");
       }
 
-     setSavedSession(data);
-     router.push(`/locked/${data.sessionId}`);
+      setSavedSession(data);
+      router.push(`/locked/${data.sessionId}`);
     } catch (error) {
       console.error("Save session failed:", error);
 
@@ -79,7 +69,8 @@ export default function QuizPage() {const router = useRouter();
         error instanceof Error ? error.message : "Could not save quiz session"
       );
 
-      setScreen("locked");
+      setScreen("error");
+      setIsSaving(false);
     }
   }
 
@@ -109,33 +100,34 @@ export default function QuizPage() {const router = useRouter();
   function restartQuiz() {
     setAnswers({});
     setCurrentIndex(0);
-    setScreen("quiz");
-    setEmail("");
     setSavedSession(null);
     setSaveError("");
+    setIsSaving(false);
+    setScreen("quiz");
   }
 
-  function unlockPreviewResult() {
-    setScreen("result");
+  function retrySave() {
+    setScreen("analysis");
+    void saveQuizSession(answers);
   }
 
   if (screen === "analysis") {
     return (
-      <main className="min-h-screen bg-[#f7f3ec] px-6 py-10 text-[#171717]">
+      <main className="min-h-screen bg-[linear-gradient(135deg,#fff8d9_0%,#e8e2a0_42%,#f5b3df_100%)] px-6 py-10 text-[#240366]">
         <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-3xl flex-col items-center justify-center text-center">
-          <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-[2rem] bg-black text-3xl text-white">
+          <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-[2rem] bg-[#240366] text-4xl text-[#e8e2a0] shadow-xl shadow-[#240366]/25">
             <div className="animate-spin">↻</div>
           </div>
 
-          <div className="mb-5 inline-flex rounded-full border border-black/10 bg-white px-4 py-2 text-sm text-black/55 shadow-sm">
+          <div className="mb-5 inline-flex rounded-full border border-[#240366]/15 bg-white/70 px-4 py-2 text-sm font-semibold text-[#240366]/70 shadow-sm backdrop-blur">
             Assessment completed
           </div>
 
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl">
-            Building your Career Path Finder Report
+          <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight md:text-6xl">
+            Building your Career Fit Finder Report
           </h1>
 
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-black/60">
+          <p className="mt-5 max-w-2xl text-lg font-medium leading-8 text-[#240366]/70">
             Your answers are being analyzed across career fit, stability,
             transferable skills, values, growth ambition, independence, burnout
             risk, and change readiness.
@@ -152,18 +144,24 @@ export default function QuizPage() {const router = useRouter();
             ].map((item, index) => (
               <div
                 key={item}
-                className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white p-4 text-black/65 shadow-sm"
+                className="flex items-center gap-3 rounded-2xl border border-[#240366]/10 bg-white/75 p-4 text-[#240366]/75 shadow-sm backdrop-blur"
                 style={{
                   animation: `fadeIn 0.4s ease ${index * 0.35}s both`,
                 }}
               >
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-black text-xs text-white">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#86cf6d] text-xs font-bold text-[#240366]">
                   ✓
                 </span>
-                {item}
+                <span className="font-semibold">{item}</span>
               </div>
             ))}
           </div>
+
+          {isSaving && (
+            <p className="mt-8 text-sm font-semibold text-[#240366]/55">
+              Please wait. Your report is being saved securely.
+            </p>
+          )}
 
           <style jsx>{`
             @keyframes fadeIn {
@@ -182,354 +180,163 @@ export default function QuizPage() {const router = useRouter();
     );
   }
 
-  if (screen === "locked" && report && lockedPreview) {
+  if (screen === "error") {
     return (
-      <main className="min-h-screen bg-[#f7f3ec] px-6 py-10 text-[#171717]">
-        <section className="mx-auto max-w-6xl">
-          <div className="mb-8 flex items-center justify-between gap-4">
-            <Link href="/" className="text-sm font-medium text-black/55">
-              ← Back to home
-            </Link>
-
-            <button
-              onClick={restartQuiz}
-              className="rounded-full border border-black/10 bg-white px-5 py-2 text-sm font-semibold shadow-sm hover:bg-black/5"
-            >
-              Restart
-            </button>
-          </div>
-
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-black text-3xl text-white">
-              🔒
+      <main className="min-h-screen bg-[linear-gradient(135deg,#fff8d9_0%,#e8e2a0_42%,#f5b3df_100%)] px-6 py-10 text-[#240366]">
+        <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-2xl flex-col items-center justify-center text-center">
+          <div className="rounded-[2rem] border border-[#240366]/12 bg-white/75 p-8 shadow-xl shadow-[#240366]/10 backdrop-blur md:p-12">
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[2rem] bg-[#f5b3df] text-4xl">
+              ⚠️
             </div>
 
-            <div className="mb-4 inline-flex rounded-full border border-black/10 bg-white px-4 py-2 text-sm text-black/55 shadow-sm">
-              Your report is ready
-            </div>
-
-            <h1 className="text-5xl font-semibold tracking-tight md:text-7xl">
-              Unlock your Career Path Finder Report
+            <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl">
+              Something went wrong
             </h1>
 
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-black/60">
-              We analyzed your 28 answers and prepared your personalized career
-              direction report, including your path type, main bottleneck, score
-              breakdown, recommended next move, and 28-day action plan.
+            <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-[#240366]/70">
+              Your answers were completed, but the report session could not be
+              saved. Please try again.
             </p>
-
-            {savedSession && (
-              <div className="mx-auto mt-5 max-w-xl rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-                Report session saved successfully.
-              </div>
-            )}
 
             {saveError && (
-              <div className="mx-auto mt-5 max-w-xl rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                Database save failed: {saveError}
+              <div className="mt-6 rounded-2xl border border-[#240366]/10 bg-[#fff8d9] px-4 py-3 text-sm font-semibold text-[#240366]/70">
+                {saveError}
               </div>
             )}
-          </div>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-[0.95fr_1.05fr]">
-            <div className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="text-2xl font-semibold">Inside your report</h2>
-
-              <div className="mt-6 space-y-3">
-                {lockedPreview.lockedSections.map((section) => (
-                  <div
-                    key={section}
-                    className="flex items-center justify-between rounded-2xl border border-black/10 bg-[#fbfaf8] p-4 text-black/70"
-                  >
-                    <span className="flex items-center gap-3">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-black text-xs text-white">
-                        ✓
-                      </span>
-                      {section}
-                    </span>
-                    <span className="text-black/35">🔒</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl bg-[#f7f3ec] p-4">
-                  <div className="text-sm text-black/45">Answers</div>
-                  <div className="mt-1 text-2xl font-bold">
-                    {lockedPreview.answeredCount}
-                  </div>
-                </div>
-
-                <div className="rounded-2xl bg-[#f7f3ec] p-4">
-                  <div className="text-sm text-black/45">Dimensions</div>
-                  <div className="mt-1 text-2xl font-bold">
-                    {lockedPreview.dimensionsAnalyzed}
-                  </div>
-                </div>
-
-                <div className="rounded-2xl bg-[#f7f3ec] p-4">
-                  <div className="text-sm text-black/45">Confidence</div>
-                  <div className="mt-1 text-2xl font-bold">
-                    {lockedPreview.confidence}%
-                  </div>
-                </div>
-              </div>
-
-              {savedSession && (
-                <div className="mt-6 rounded-2xl bg-[#f7f3ec] p-4 text-sm text-black/50">
-                  Session ID: {savedSession.sessionId}
-                </div>
-              )}
-            </div>
-
-            <div className="rounded-[2rem] bg-black p-6 text-white shadow-sm md:p-8">
-              <div className="mb-5 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm text-white/75">
-                One-time unlock
-              </div>
-
-              <div className="text-6xl font-bold tracking-tight">$1.99</div>
-
-              <p className="mt-5 leading-7 text-white/65">
-                Unlock your complete personalized report instantly. This is a
-                practical self-assessment designed to help you understand your
-                next career direction more clearly.
-              </p>
-
-              <div className="mt-6 rounded-3xl bg-white/10 p-4">
-                <label className="text-sm font-medium text-white/60">
-                  Email for result access
-                </label>
-
-                <input
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="you@example.com"
-                  className="mt-2 w-full rounded-2xl border border-white/10 bg-white px-4 py-4 text-black outline-none placeholder:text-black/35"
-                />
-              </div>
-
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <button
-                onClick={unlockPreviewResult}
-                className="mt-6 w-full rounded-full bg-white px-8 py-4 text-base font-semibold text-black transition hover:bg-white/90"
+                type="button"
+                onClick={retrySave}
+                className="rounded-full bg-[#e8e2a0] px-8 py-4 text-base font-bold text-[#240366] shadow-lg shadow-[#240366]/15 ring-1 ring-[#240366]/15 transition hover:bg-[#f5b3df]"
               >
-                Unlock My Report — $1.99
+                Try Again
               </button>
 
-              <p className="mt-4 text-center text-xs leading-6 text-white/40">
-                Preview mode: this button unlocks locally for now. Later it will
-                open a real checkout and unlock only after payment confirmation.
-              </p>
+              <button
+                type="button"
+                onClick={restartQuiz}
+                className="rounded-full border border-[#240366]/15 bg-white/75 px-8 py-4 text-base font-bold text-[#240366] shadow-sm transition hover:bg-[#e8e2a0]"
+              >
+                Restart Quiz
+              </button>
             </div>
           </div>
-
-          <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-6 text-black/35">
-            Career Path Finder is a practical self-assessment. It is not a
-            psychological, medical, financial, academic, or professional
-            diagnosis. Results are based on your selected answers and are meant
-            to provide direction, not guarantee outcomes.
-          </p>
-        </section>
-      </main>
-    );
-  }
-
-  if (screen === "result" && report) {
-    return (
-      <main className="min-h-screen bg-[#f7f3ec] px-6 py-10 text-[#171717]">
-        <section className="mx-auto max-w-5xl">
-          <div className="mb-8 flex items-center justify-between gap-4">
-            <Link href="/" className="text-sm font-medium text-black/55">
-              ← Back to home
-            </Link>
-
-            <button
-              onClick={restartQuiz}
-              className="rounded-full border border-black/10 bg-white px-5 py-2 text-sm font-semibold shadow-sm hover:bg-black/5"
-            >
-              Restart
-            </button>
-          </div>
-
-          <div className="rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm md:p-12">
-            <div className="mb-5 inline-flex rounded-full bg-black px-4 py-2 text-sm font-semibold text-white">
-              Full report unlocked
-            </div>
-
-            <h1 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl">
-              {report.result.title}
-            </h1>
-
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-black/60">
-              {report.result.plainMeaning}
-            </p>
-
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              <div className="rounded-3xl bg-[#f7f3ec] p-5">
-                <div className="text-sm text-black/45">Confidence</div>
-                <div className="mt-2 text-3xl font-bold">
-                  {report.confidence}%
-                </div>
-              </div>
-
-              <div className="rounded-3xl bg-[#f7f3ec] p-5">
-                <div className="text-sm text-black/45">Answers analyzed</div>
-                <div className="mt-2 text-3xl font-bold">
-                  {report.answeredCount}
-                </div>
-              </div>
-
-              <div className="rounded-3xl bg-[#f7f3ec] p-5">
-                <div className="text-sm text-black/45">Secondary signal</div>
-                <div className="mt-2 text-xl font-bold">
-                  {report.secondary.shortTitle}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 grid gap-5 md:grid-cols-2">
-              <div className="rounded-3xl border border-black/10 p-6">
-                <h2 className="text-2xl font-semibold">What this means</h2>
-                <p className="mt-3 leading-7 text-black/60">
-                  {report.result.description}
-                </p>
-              </div>
-
-              <div className="rounded-3xl border border-black/10 p-6">
-                <h2 className="text-2xl font-semibold">Main bottleneck</h2>
-                <p className="mt-3 leading-7 text-black/60">
-                  {report.result.mainBottleneck}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 rounded-3xl border border-black/10 p-6">
-              <h2 className="text-2xl font-semibold">Recommended next move</h2>
-              <p className="mt-3 leading-7 text-black/60">
-                {report.result.bestMove}
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-5 md:grid-cols-2">
-              <div className="rounded-3xl border border-black/10 p-6">
-                <h2 className="text-2xl font-semibold">Best for</h2>
-                <ul className="mt-4 space-y-2 text-black/60">
-                  {report.result.bestFor.map((item) => (
-                    <li key={item}>• {item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="rounded-3xl border border-black/10 p-6">
-                <h2 className="text-2xl font-semibold">Avoid for now</h2>
-                <ul className="mt-4 space-y-2 text-black/60">
-                  {report.result.avoidForNow.map((item) => (
-                    <li key={item}>• {item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h2 className="text-2xl font-semibold">
-                Your 28-day action plan
-              </h2>
-
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                {report.result.plan28Days.map((week) => (
-                  <div
-                    key={week.week}
-                    className="rounded-3xl border border-black/10 bg-[#f7f3ec] p-6"
-                  >
-                    <div className="text-sm font-semibold text-black/45">
-                      {week.week}
-                    </div>
-
-                    <h3 className="mt-2 text-xl font-semibold">
-                      {week.focus}
-                    </h3>
-
-                    <ul className="mt-4 space-y-2 text-black/60">
-                      {week.actions.map((action) => (
-                        <li key={action}>• {action}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-8 rounded-3xl bg-black p-6 text-white">
-              <h2 className="text-2xl font-semibold">Your first action</h2>
-              <p className="mt-3 leading-7 text-white/65">
-                {report.nextBestAction}
-              </p>
-            </div>
-          </div>
-
-          <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-6 text-black/35">
-            Career Path Finder is a practical self-assessment. It is not a
-            psychological, medical, financial, academic, or professional
-            diagnosis. Results are based on your selected answers and are meant
-            to provide direction, not guarantee outcomes.
-          </p>
         </section>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f3ec] px-6 py-10 text-[#171717]">
-      <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-4xl flex-col justify-center">
-        <div className="mb-8">
-          <Link href="/" className="text-sm font-medium text-black/55">
+    <main className="min-h-screen bg-[linear-gradient(135deg,#fff8d9_0%,#e8e2a0_42%,#f5b3df_100%)] px-6 py-8 text-[#240366]">
+      <section className="mx-auto max-w-5xl">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 rounded-full border border-[#240366]/12 bg-white/70 px-5 py-3 text-sm font-semibold text-[#240366] shadow-sm backdrop-blur transition hover:bg-white"
+          >
             ← Back to home
           </Link>
+
+          <div className="rounded-full border border-[#240366]/12 bg-white/65 px-4 py-2 text-sm font-semibold text-[#240366]/75 shadow-sm backdrop-blur">
+            Career Fit Finder
+          </div>
         </div>
 
-        <div className="mb-6">
-          <div className="mb-3 flex items-center justify-between text-sm text-black/45">
-            <span>
-              {currentQuestion.section} · Question {currentIndex + 1} of{" "}
-              {totalQuestions}
-            </span>
-            <span>{progress}% complete</span>
+        <div className="rounded-[28px] border border-[#240366]/10 bg-white/55 p-5 shadow-[0_16px_45px_rgba(36,3,102,0.09)] backdrop-blur md:p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <div className="text-sm font-semibold text-[#240366]/58">
+                {currentQuestion.section} · Question {currentIndex + 1} of{" "}
+                {totalQuestions}
+              </div>
+
+              <div className="mt-2 text-2xl font-bold tracking-tight text-[#240366] md:text-3xl">
+                You’re building your career clarity step by step
+              </div>
+            </div>
+
+            <div className="rounded-2xl bg-[#faf6eb] px-4 py-3 text-right ring-1 ring-[#240366]/10">
+              <div className="text-xs font-bold uppercase tracking-[0.12em] text-[#240366]/45">
+                Progress
+              </div>
+              <div className="mt-1 text-xl font-extrabold text-[#240366]">
+                {progress}% complete
+              </div>
+            </div>
           </div>
 
-          <div className="h-2 overflow-hidden rounded-full bg-black/10">
+          <div className="mt-5 h-3 w-full overflow-hidden rounded-full bg-[#240366]/10">
             <div
-              className="h-full rounded-full bg-black transition-all"
+              className="h-full rounded-full bg-[linear-gradient(90deg,#240366_0%,#f5b3df_70%,#86cf6d_100%)] transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
-        <div className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-sm md:p-10">
+        <div className="mt-8 rounded-[36px] border border-[#240366]/10 bg-white/78 p-7 shadow-[0_18px_50px_rgba(36,3,102,0.10)] backdrop-blur md:p-10">
           <button
+            type="button"
             onClick={goBack}
-            className={`mb-6 text-sm font-medium text-black/45 hover:text-black ${
+            className={`mb-6 rounded-full border border-[#240366]/10 bg-white/70 px-5 py-3 text-sm font-bold text-[#240366]/65 shadow-sm transition hover:bg-[#e8e2a0] hover:text-[#240366] ${
               currentIndex === 0 ? "pointer-events-none opacity-0" : ""
             }`}
           >
             ← Back
           </button>
 
-          <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
+          <div className="mb-4 inline-flex rounded-full bg-[#f5b3df]/45 px-4 py-2 text-sm font-bold text-[#240366]">
+            {currentQuestion.section}
+          </div>
+
+          <h1 className="max-w-4xl text-4xl font-extrabold leading-[1.05] tracking-tight text-[#240366] md:text-6xl">
             {currentQuestion.question}
           </h1>
 
-          <div className="mt-8 grid gap-3">
-            {currentQuestion.options.map((option) => (
+          <div className="mt-8 space-y-4">
+            {currentQuestion.options.map((option, index) => (
               <button
                 key={option.id}
+                type="button"
                 onClick={() => chooseAnswer(option.id)}
-                className="group flex w-full items-center justify-between rounded-3xl border border-black/10 bg-[#fbfaf8] p-5 text-left text-base text-black/75 transition hover:bg-black hover:text-white md:p-6"
+                className="group flex w-full items-center justify-between rounded-[28px] border border-[#240366]/12 bg-[#fffdf8] px-6 py-6 text-left shadow-sm transition duration-200 hover:-translate-y-[1px] hover:border-[#240366]/25 hover:bg-[#fff7e6] hover:shadow-[0_12px_30px_rgba(36,3,102,0.10)]"
               >
-                <span>{option.label}</span>
-                <span className="ml-4 text-xl transition group-hover:translate-x-1">
+                <div className="flex items-start gap-4">
+                  <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e8e2a0] text-sm font-extrabold text-[#240366] ring-1 ring-[#240366]/10">
+                    {index + 1}
+                  </div>
+
+                  <div className="text-[1.08rem] font-semibold leading-8 text-[#2c165f]">
+                    {option.label}
+                  </div>
+                </div>
+
+                <div className="ml-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-xl text-[#240366] ring-1 ring-[#240366]/10 transition group-hover:bg-[#240366] group-hover:text-[#e8e2a0]">
                   →
-                </span>
+                </div>
               </button>
             ))}
+          </div>
+
+          <div className="mt-8 flex flex-col gap-4 rounded-[28px] border border-[#240366]/10 bg-[#faf6eb] p-5 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div className="text-sm font-semibold text-[#240366]/55">
+                Current step
+              </div>
+              <div className="mt-1 text-lg font-extrabold text-[#240366]">
+                Question {currentIndex + 1} of {totalQuestions}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <div className="rounded-full bg-white px-4 py-2 text-sm font-bold text-[#240366] shadow-sm ring-1 ring-[#240366]/10">
+                Theme: {currentQuestion.section}
+              </div>
+
+              <div className="rounded-full bg-[#86cf6d]/25 px-4 py-2 text-sm font-bold text-[#240366] ring-1 ring-[#240366]/10">
+                Progress: {progress}%
+              </div>
+            </div>
           </div>
         </div>
       </section>
