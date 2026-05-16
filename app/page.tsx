@@ -20,11 +20,11 @@ export default function Home() {
 
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">
           <a
-            href="/quiz"
-            className="rounded-full bg-[#e8e2a0] px-8 py-4 text-base font-extrabold text-[#240366] shadow-lg shadow-[#240366]/20 ring-1 ring-[#240366]/15 transition hover:bg-[#f5b3df]"
-          >
-            Start Free Assessment
-          </a>
+  href="/quiz"
+  className="mt-6 block rounded-full bg-[#fffdf8] px-8 py-4 text-center text-base font-extrabold text-[#240366] shadow-lg shadow-[#240366]/15 ring-1 ring-[#240366]/15 transition hover:bg-[#f5b3df]"
+>
+  Start Assessment
+</a>
 
           <a
             href="#report-preview"
