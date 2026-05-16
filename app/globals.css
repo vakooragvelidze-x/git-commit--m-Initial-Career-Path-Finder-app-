@@ -70,20 +70,25 @@ a {
 }
 
 .brand-button-primary {
-  background: #240366;
-  color: #e8e2a0;
+  background: #e8e2a0;
+  color: #240366;
+  border: 1px solid rgba(36, 3, 102, 0.16);
+  box-shadow: 0 14px 32px rgba(36, 3, 102, 0.18);
 }
 
 .brand-button-primary:hover {
-  background: #351189;
-}
-
-.brand-button-secondary {
-  border: 1px solid rgba(36, 3, 102, 0.18);
-  background: rgba(255, 255, 255, 0.58);
+  background: #f5b3df;
   color: #240366;
 }
 
+.brand-button-secondary {
+  background: rgba(255, 255, 255, 0.72);
+  color: #240366;
+  border: 1px solid rgba(36, 3, 102, 0.18);
+  box-shadow: 0 10px 24px rgba(36, 3, 102, 0.08);
+}
+
 .brand-button-secondary:hover {
-  background: rgba(255, 255, 255, 0.82);
+  background: #e8e2a0;
+  color: #240366;
 }

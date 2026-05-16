@@ -8,30 +8,29 @@ export default function Home() {
           5-minute self-assessment for adults 30+
         </div>
 
-        <h1 className="max-w-4xl text-5xl font-bold tracking-tight md:text-7xl">
+        <h1 className="max-w-4xl text-5xl font-extrabold tracking-tight text-[#240366] md:text-7xl">
           Find the career direction that fits you best right now.
         </h1>
 
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-[#240366]/70">
-          Answer 28 carefully designed questions and get a personalized career
+<p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-[#240366]/75">          Answer 28 carefully designed questions and get a personalized career
           path report based on your current situation, goals, energy, skills,
           responsibilities, and next-step readiness.
         </p>
 
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">
           <a
-            href="/quiz"
-            className="rounded-full bg-[#240366] px-8 py-4 text-base font-semibold text-[#e8e2a0] shadow-lg shadow-[#240366]/20 transition hover:bg-[#351189]"
-          >
-            Start Free Assessment
-          </a>
+  href="/quiz"
+  className="rounded-full bg-[#e8e2a0] px-8 py-4 text-base font-bold text-[#240366] shadow-lg shadow-[#240366]/20 ring-1 ring-[#240366]/15 transition hover:bg-[#f5b3df]"
+>
+  Start Free Assessment
+</a>
 
           <a
-            href="#how-it-works"
-            className="rounded-full border border-[#240366]/15 bg-white/60 px-8 py-4 text-base font-semibold text-[#240366] shadow-sm backdrop-blur transition hover:bg-white/80"
-          >
-            See What You’ll Get
-          </a>
+  href="#how-it-works"
+  className="rounded-full border border-[#240366]/15 bg-white/75 px-8 py-4 text-base font-bold text-[#240366] shadow-sm backdrop-blur transition hover:bg-[#e8e2a0]"
+>
+  See What You’ll Get
+</a>
         </div>
 
         <div
