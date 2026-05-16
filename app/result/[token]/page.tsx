@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getQuizSessionByAccessToken } from "../../../src/lib/quiz-sessions";
 
 type PageProps = {
@@ -11,12 +11,15 @@ type PageProps = {
 export default async function ResultPage({ params }: PageProps) {
   const { token } = await params;
   const session = await getQuizSessionByAccessToken(token);
+if (!session) {
+  notFound();
+}
 
-  if (!session) {
-    notFound();
-  }
+if (!session.paid) {
+  redirect(`/locked/${session.id}`);
+}
 
-  const report = session.report;
+const report = session.report;
 
   return (
     <main className="min-h-screen bg-[#f7f3ec] px-6 py-10 text-[#171717]">
