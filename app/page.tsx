@@ -5,16 +5,16 @@ export default function Home() {
     <main className="min-h-screen text-[#240366]">
       <section className="mx-auto flex max-w-6xl flex-col items-center justify-center px-6 pb-16 pt-20 text-center">
         <div className="mb-6 rounded-full border border-[#240366]/15 bg-white/60 px-4 py-2 text-sm text-[#240366]/70 shadow-sm backdrop-blur">
-          5-minute self-assessment for adults 30+
+          3–5 minute self-assessment for adults 30+
         </div>
 
         <h1 className="max-w-4xl text-5xl font-extrabold tracking-tight text-[#240366] md:text-7xl">
           Find the career direction that fits you best right now.
         </h1>
 
-<p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-[#240366]/75">          Answer 28 carefully designed questions and get a personalized career
-          path report based on your current situation, goals, energy, skills,
-          responsibilities, and next-step readiness.
+<p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-[#240366]/75">          Answer 22 focused questions and get a personalized career path report
+based on your current situation, goals, energy, skills, responsibilities,
+and next-step readiness.
         </p>
 
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">

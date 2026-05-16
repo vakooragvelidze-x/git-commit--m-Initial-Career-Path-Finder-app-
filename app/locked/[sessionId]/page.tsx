@@ -53,7 +53,7 @@ export default async function LockedReportPage({ params }: PageProps) {
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#725d4f]">
-            Your 28 answers have been analyzed. Unlock the full report to see
+            Your answers have been analyzed. Unlock the full report to see
             your career path type, score breakdown, main bottleneck, recommended
             next move, and practical 28-day action plan.
           </p>
