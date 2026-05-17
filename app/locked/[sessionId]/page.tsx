@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getQuizSessionById } from "../../../src/lib/quiz-sessions";
 import { getPublicResultPreview } from "../../../src/lib/career-path/scoring";
 import PaddleCheckoutButton from "../../components/PaddleCheckoutButton";
+import TrackEvent from "../../components/TrackEvent";
 
 type PageProps = {
   params: Promise<{
@@ -22,6 +23,16 @@ export default async function LockedReportPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-[linear-gradient(135deg,#fff8d9_0%,#e8e2a0_42%,#f5b3df_100%)] px-6 py-8 text-[#240366]">
+     <TrackEvent
+  eventName="locked_page_viewed"
+  sessionId={session.id}
+  accessToken={session.access_token}
+  metadata={{
+    confidence: preview.confidence,
+    answeredCount: preview.answeredCount,
+    dimensionsAnalyzed: preview.dimensionsAnalyzed,
+  }}
+/>
       <section className="mx-auto max-w-6xl">
         <div className="mb-8 flex items-center justify-between gap-4">
           <Link

@@ -69,7 +69,27 @@ export default function PaddleCheckoutButton({
       setError("Paddle is still loading. Please try again.");
       return;
     }
-
+    try {
+  await fetch("/api/track-event", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      eventName: "checkout_clicked",
+      pagePath: window.location.pathname,
+      sessionId,
+      accessToken,
+      metadata: {
+        price: 1.99,
+        currency: "USD",
+        product: "career_fit_finder_report",
+      },
+    }),
+  });
+} catch (error) {
+  console.error("Checkout tracking failed:", error);
+}
     try {
       setIsOpening(true);
 
