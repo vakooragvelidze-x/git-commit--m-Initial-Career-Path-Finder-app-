@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import Link from "next/link";
 import { QUESTIONS } from "../../src/lib/career-path/questions";
 
@@ -19,6 +19,27 @@ type SavedSession = {
   };
 };
 
+async function trackFunnelEvent(
+  eventName: string,
+  metadata: Record<string, unknown> = {}
+) {
+  try {
+    await fetch("/api/track-event", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        eventName,
+        pagePath: window.location.pathname,
+        metadata,
+      }),
+    });
+  } catch (error) {
+    console.error("Tracking failed:", error);
+  }
+}
+
 export default function QuizPage() {
   const router = useRouter();
 
@@ -33,6 +54,12 @@ export default function QuizPage() {
   const totalQuestions = QUESTIONS.length;
   const answeredCount = Object.keys(answers).length;
   const progress = Math.round((answeredCount / totalQuestions) * 100);
+
+  useEffect(() => {
+    void trackFunnelEvent("quiz_started", {
+      totalQuestions,
+    });
+  }, [totalQuestions]);
 
   async function saveQuizSession(finalAnswers: Record<string, string>) {
     setSaveError("");
@@ -61,6 +88,13 @@ export default function QuizPage() {
       }
 
       setSavedSession(data);
+
+      void trackFunnelEvent("session_saved", {
+        sessionId: data.sessionId,
+        answeredCount: data.preview?.answeredCount,
+        confidence: data.preview?.confidence,
+      });
+
       router.push(`/locked/${data.sessionId}`);
     } catch (error) {
       console.error("Save session failed:", error);
@@ -82,7 +116,19 @@ export default function QuizPage() {
 
     setAnswers(nextAnswers);
 
+    void trackFunnelEvent("question_answered", {
+      questionId: currentQuestion.id,
+      questionNumber: currentIndex + 1,
+      selectedOption: optionId,
+      section: currentQuestion.section,
+    });
+
     if (currentIndex === totalQuestions - 1) {
+      void trackFunnelEvent("quiz_completed", {
+        totalQuestions,
+        answeredCount: Object.keys(nextAnswers).length,
+      });
+
       setScreen("analysis");
       void saveQuizSession(nextAnswers);
       return;
