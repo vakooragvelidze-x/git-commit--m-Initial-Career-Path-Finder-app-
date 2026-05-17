@@ -1,8 +1,9 @@
 import ReviewCarousel from "./components/ReviewCarousel";
-
+import TrackEvent from "./components/TrackEvent";
 export default function Home() {
   return (
     <main className="min-h-screen text-[#240366]">
+      <TrackEvent eventName="homepage_viewed" />
       <section className="mx-auto flex max-w-6xl flex-col items-center justify-center px-6 pb-16 pt-20 text-center">
         <div className="mb-6 rounded-full border border-[#240366]/15 bg-white/65 px-4 py-2 text-sm font-bold text-[#240366]/70 shadow-sm backdrop-blur">
           3–5 minute self-assessment for adults 30+
